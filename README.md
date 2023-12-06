@@ -23,30 +23,447 @@ This API intends to remedy the above by creating a single source of truth that u
 
 ## End Points
 
-categories  
-categories/\<id>  
+### /
 
-tools  
-tools/\<id>  
-tools/\<id>/steps  
-tools/\<id>/steps/\<id>  
+- HTTP Request Verb: GET
+- Required Data: N/A
+- Expected Response: A '200 OK' response with a json of API end points.
+- Authentication: N/A
+- Description: Provides an index of all the end points available with this API.
 
-languages  
-languages/\<id>  
+**Example**
 
-stacks  
-stacks/\<id>  
-stacks/\<id>/tools  
-stacks/\<id>/languages  
 
-users  
-users/register  
-users/login  
-users/\<id>  
-users/\<id>/tools  
-users/\<id>/plans  
-users/\<id>/plans/generate  
-users/\<id>/plans/\<id>  
+
+### /categories
+
+- HTTP Request Verb: GET
+- Required Data: N/A
+- Expected Response: A '200 OK' response with a json of category names and IDs.
+- Authentication: JWT Bearer Token Required
+- Description: Provides a JSON containing the names and IDs of all categories within the table.
+
+**Example**
+
+
+
+- HTTP Request Verb: POST
+- Required Data: name (char(50), required), description (text)
+- Expected Response: A '201 CREATED' response with a json of the category name and description.
+- Authentication: JWT Bearer Token Required, User with Admin Privledges required.
+- Description: Allows an admin to create a new category in the categories table.
+
+**Example**
+
+
+
+#### /categories/\<id>  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: PUT/PATCH
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: DELETE
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+### /tools  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: POST
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /tools/\<id>  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: PUT/PATCH
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: DELETE
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /tools/\<id>/steps  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: POST
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /tools/\<id>/steps/\<id>  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: PUT/PATCH
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: DELETE
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+### /languages  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: POST
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /languages/\<id>  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: PUT/PATCH
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: DELETE
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+### /stacks  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: POST
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /stacks/\<id>  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: PUT/PATCH
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: DELETE
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /stacks/\<id>/tools  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /stacks/\<id>/languages  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+### /users  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: POST
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /users/register  
+
+- HTTP Request Verb: POST
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /users/login  
+
+- HTTP Request Verb: POST
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /users/\<id>  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: PUT/PATCH
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: DELETE
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /users/\<id>/tools  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /users/\<id>/plans  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /users/\<id>/plans/generate  
+
+- HTTP Request Verb: POST
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+#### /users/\<id>/plans/\<id>  
+
+- HTTP Request Verb: GET
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
+
+- HTTP Request Verb: DELETE
+- Required Data:
+- Expected Response:
+- Authentication:
+- Description:
+
+**Example**
+
+
 
 ## ERD
 

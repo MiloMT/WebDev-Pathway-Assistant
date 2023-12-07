@@ -123,12 +123,12 @@ def db_seed():
             email = "admin@test.com",
             password = bcrypt.generate_password_hash("admin").decode("utf8"),
             is_admin = True
-        ), # type: ignore
+        ), 
         User(
             name = "Test User",
             email = "test@test.com",
             password = bcrypt.generate_password_hash("password").decode("utf8")
-        ), # type: ignore
+        ), 
     ]
 
     db.session.add_all(users)

@@ -27,16 +27,11 @@ def all_user_tools(user_id):
 # @jwt_required()
 def create_user_tool(user_id):
     
-    print("Running creation route")
-    
-    user_tool_info = User_ToolSchema(exclude=["user_id"]).load(request.json)
-    
-    print("Finished load")
-    print(user_tool_info)
+    user_tool_info = User_ToolSchema(exclude=["user"]).load(request.json)
 
     user_tool = User_Tool(
         user_id = user_id,
-        tool_id = user_tool_info["tool_id"]
+        tool_id = user_tool_info["tool"]["id"]
     )
     
     db.session.add(user_tool)

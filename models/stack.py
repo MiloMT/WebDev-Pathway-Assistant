@@ -16,7 +16,7 @@ class Stack(db.Model):
 class StackSchema(ma.Schema):
     
     stack_tools = fields.Nested(
-        "Stack_ToolSchema", only=["tool"], many=True
+        "Stack_ToolSchema", only=["tool.name"], many=True
         )
     
     class Meta:

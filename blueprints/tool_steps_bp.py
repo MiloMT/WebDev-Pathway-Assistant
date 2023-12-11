@@ -27,7 +27,7 @@ def all_tool_steps(tool_id):
 # @jwt_required()
 def create_tool_step(tool_id):
     
-    tool_step_info = Tool_StepSchema().load(request.json)
+    tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
     
     tool_step = Tool_Step(
         step_no = tool_step_info["step_no"],

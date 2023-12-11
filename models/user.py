@@ -20,9 +20,7 @@ class User(db.Model):
 class UserSchema(ma.Schema):
     
     plans = fields.Nested("PlanSchema", many=True, only=["id", "name", "end_date"])
-    user_tools = fields.Nested(
-        "User_ToolSchema", only=["tool"], many=True
-        )
+    user_tools = fields.Nested("User_ToolSchema", many=True, only=["tool.name"])
     
     email = fields.Email(required=True)
     password = fields.String(

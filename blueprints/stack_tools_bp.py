@@ -27,16 +27,11 @@ def all_stack_tools(stack_id):
 # @jwt_required()
 def create_stack_tool(stack_id):
     
-    print("Running creation route")
-    
-    stack_tool_info = Stack_ToolSchema().load(request.json)
-    
-    print("Finished load")
-    print(stack_tool_info)
+    stack_tool_info = Stack_ToolSchema(exclude=["stack"]).load(request.json)
 
     stack_tool = Stack_Tool(
         stack_id = stack_id,
-        tool_id = stack_tool_info["tool_id"]
+        tool_id = stack_tool_info["tool"]["id"]
     )
     
     db.session.add(stack_tool)

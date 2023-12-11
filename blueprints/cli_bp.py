@@ -59,25 +59,6 @@ def db_seed():
     db.session.add_all(languages)
     db.session.commit()
     
-    # Plans
-    plans = [
-        Plan(
-            name = "Plan 1",
-            end_date = f"{date.today()}"
-        ),
-        Plan(
-            name = "Plan 2",
-            end_date = f"{date.today()}"
-        ),
-        Plan(
-            name = "Plan 3",
-            end_date = f"{date.today()}"
-        ),
-    ]
-    
-    db.session.add_all(plans)
-    db.session.commit()
-    
     # Stacks
     stacks = [
         Stack(
@@ -130,8 +111,30 @@ def db_seed():
             password = bcrypt.generate_password_hash("password").decode("utf8")
         ), 
     ]
-
+    
     db.session.add_all(users)
     db.session.commit()
     
+    # Plans
+    plans = [
+        Plan(
+            name = "Plan 1",
+            end_date = f"{date.today()}",
+            user_id = users[0].id
+        ),
+        Plan(
+            name = "Plan 2",
+            end_date = f"{date.today()}",
+            user_id = users[1].id
+        ),
+        Plan(
+            name = "Plan 3",
+            end_date = f"{date.today()}",
+            user_id = users[0].id
+        ),
+    ]
+    
+    db.session.add_all(plans)
+    db.session.commit()
+
     print("Database seeded")

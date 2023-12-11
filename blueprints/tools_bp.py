@@ -1,12 +1,13 @@
 from flask import Blueprint, request
 # from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.tool import Tool, ToolSchema
+from blueprints.tool_steps_bp import tool_steps_bp
 from setup import db
 # from auth import authorize
 
 
 tools_bp = Blueprint("tools", __name__, url_prefix="/tools")
-
+tools_bp.register_blueprint(tool_steps_bp)
 
 # Get all tools
 @tools_bp.route("/")

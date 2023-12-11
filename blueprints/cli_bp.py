@@ -7,7 +7,7 @@ from models.language import Language
 from models.plan import Plan
 # from models.stack_tool import Stack_Tool
 from models.stack import Stack
-# from models.tool_step import Tool_Step
+from models.tool_step import Tool_Step
 from models.tool import Tool
 # from models.user_tool import User_Tool
 from models.user import User
@@ -101,6 +101,31 @@ def db_seed():
     ]
     
     db.session.add_all(tools)
+    db.session.commit()
+    
+    # Tool Steps
+    tool_steps = [
+        Tool_Step(
+            step_no = "1",
+            description = "The first step",
+            time_days = "2",
+            tool_id = tools[0].id
+        ),
+        Tool_Step(
+            step_no = "2",
+            description = "The second step",
+            time_days = "1",
+            tool_id = tools[0].id
+        ),
+        Tool_Step(
+            step_no = "3",
+            description = "The second step",
+            time_days = "3",
+            tool_id = tools[0].id
+        ),
+    ]
+    
+    db.session.add_all(tool_steps)
     db.session.commit()
     
     # Users

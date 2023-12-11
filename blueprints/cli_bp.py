@@ -5,11 +5,11 @@ from flask import Blueprint
 from models.category import Category
 from models.language import Language
 from models.plan import Plan
-# from models.stack_tool import Stack_Tool
+from models.stack_tool import Stack_Tool
 from models.stack import Stack
 from models.tool_step import Tool_Step
 from models.tool import Tool
-# from models.user_tool import User_Tool
+from models.user_tool import User_Tool
 from models.user import User
 
 db_commands = Blueprint("db", "__name__")
@@ -166,6 +166,44 @@ def db_seed():
     ]
     
     db.session.add_all(plans)
+    db.session.commit()
+
+    # Stack Tools
+    stack_tools = [
+        Stack_Tool(
+            stack_id = stacks[0].id,
+            tool_id = tools[0].id
+        ),
+        Stack_Tool(
+            stack_id = stacks[0].id,
+            tool_id = tools[1].id
+        ),
+        Stack_Tool(
+            stack_id = stacks[0].id,
+            tool_id = tools[2].id
+        ),
+    ]
+    
+    db.session.add_all(stack_tools)
+    db.session.commit()
+    
+    # User Tools
+    user_tools = [
+        User_Tool(
+            user_id = users[0].id,
+            tool_id = tools[0].id
+        ),
+        User_Tool(
+            user_id = users[0].id,
+            tool_id = tools[1].id
+        ),
+        User_Tool(
+            user_id = users[0].id,
+            tool_id = tools[2].id
+        ),
+    ]
+    
+    db.session.add_all(user_tools)
     db.session.commit()
 
     print("Database seeded")

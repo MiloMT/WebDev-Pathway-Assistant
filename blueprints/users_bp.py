@@ -3,12 +3,13 @@ from flask import Blueprint, request
 from flask_jwt_extended import create_access_token, jwt_required
 from datetime import timedelta
 from models.user import User, UserSchema
+from blueprints.user_tools_bp import user_tools_bp
 from setup import bcrypt, db
 from sqlalchemy import exc
 
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
-
+users_bp.register_blueprint(user_tools_bp)
 
 # Get all users
 @users_bp.route("/")

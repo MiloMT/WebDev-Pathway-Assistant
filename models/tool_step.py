@@ -23,4 +23,4 @@ class Tool_StepSchema(ma.Schema):
     tool = fields.Nested("ToolSchema", only=["name"])
     
     class Meta:
-        fields = ("id", "step_no", "description", "time_days", "tool")
+        fields = ("step_no", "description", "time_days", "tool")

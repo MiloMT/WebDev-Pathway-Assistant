@@ -14,11 +14,15 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     
     plans = db.relationship("Plan", back_populates="user")
+    user_tools = db.relationship("User_Tool", back_populates="user")
     
     
 class UserSchema(ma.Schema):
     
     plans = fields.Nested("PlanSchema", many=True, only=["id", "name", "end_date"])
+    user_tools = fields.Nested(
+        "User_ToolSchema", only=["tool"], many=True
+        )
     
     email = fields.Email(required=True)
     password = fields.String(
@@ -29,4 +33,4 @@ class UserSchema(ma.Schema):
         )
     
     class Meta:
-        fields = ("id", "name", "email", "password", "is_admin", "plans")
+        fields = ("id", "name", "email", "password", "is_admin", "plans", "user_tools")

@@ -21,6 +21,8 @@ class Tool(db.Model):
     language = db.relationship("Language", back_populates="tools")
     
     tool_steps = db.relationship("Tool_Step", back_populates="tool")
+    stack_tools = db.relationship("Stack_Tool", back_populates="tool")
+    user_tools = db.relationship("User_Tool", back_populates="tool")
     
 class ToolSchema(ma.Schema):
     

@@ -27,7 +27,7 @@ def all_tool_steps(tool_id):
 # @jwt_required()
 def create_tool_step(tool_id):
     
-    tool_step_info = Tool_StepSchema(exclude=["id"]).load(request.json)
+    tool_step_info = Tool_StepSchema().load(request.json)
     
     tool_step = Tool_Step(
         step_no = tool_step_info["step_no"],
@@ -39,7 +39,7 @@ def create_tool_step(tool_id):
     db.session.add(tool_step)
     db.session.commit()
     
-    return ToolSchema().dump(tool_step), 201
+    return Tool_StepSchema().dump(tool_step), 201
 
 
 # Get a single tool

@@ -2,10 +2,12 @@ from flask import Blueprint, request
 # from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.stack import Stack, StackSchema
 from setup import db
+from blueprints.stack_tools_bp import stack_tools_bp
 # from auth import authorize
 
 
 stacks_bp = Blueprint("stacks", __name__, url_prefix="/stacks")
+stacks_bp.register_blueprint(stack_tools_bp)
 
 
 # Get all stacks

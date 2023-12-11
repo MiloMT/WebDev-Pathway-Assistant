@@ -82,15 +82,21 @@ def db_seed():
     tools = [
         Tool(
             name = "Tool 1",
-            description = "Tool 1"
+            description = "Tool 1",
+            category_id = categories[0].id,
+            language_id = languages[0].id
         ),
         Tool(
             name = "Tool 2",
-            description = "Tool 2"
+            description = "Tool 2",
+            category_id = categories[1].id,
+            language_id = languages[1].id
         ),
         Tool(
             name = "Tool 3",
-            description = "Tool 3"
+            description = "Tool 3",
+            category_id = categories[2].id,
+            language_id = languages[2].id
         ),
     ]
     

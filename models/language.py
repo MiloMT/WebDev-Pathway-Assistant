@@ -8,6 +8,7 @@ class Language(db.Model):
     
     name = db.Column(db.String(50), nullable=False, unique=True)
     
+    tools = db.relationship("Tool", back_populates="language")
     
 class LanguageSchema(ma.Schema):
     

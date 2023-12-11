@@ -9,6 +9,8 @@ class Category(db.Model):
     name = db.Column(db.String(50), nullable=False, unique=True)
     description = db.Column(db.Text)
     
+    tools = db.relationship("Tool", back_populates="category")
+    
     
 class CategorySchema(ma.Schema):
     

@@ -28,21 +28,23 @@ def all_users():
 # Register a new user
 @users_bp.route("/", methods=["POST"])
 def register():
-    try:
-        user_info = UserSchema(exclude=["id", "is_admin"]).load(request.json)
-        
-        user = User(
-            email = user_info["email"],
-            password = bcrypt.generate_password_hash(user_info["password"]).decode("utf8"),
-            name = user_info.get("id", "name", "anonymous")
-        )
-        
+    
+    user_info = UserSchema(exclude=["id", "is_admin"]).load(request.json)
+    
+    user = User(
+        email = user_info["email"],
+        password = bcrypt.generate_password_hash(user_info["password"]).decode("utf8"),
+        name = user_info["name"]
+    )
+    
+    try:   
         db.session.add(user)
         db.session.commit()
-        
-        return UserSchema(only=["email", "name"]).dump(user), 201
     except exc.IntegrityError:
-        return {"error": "Email address already in use"}, 409
+        return {"error": "Email address already in use"}, 409 
+    
+    return UserSchema(only=["email", "name"]).dump(user), 201
+    
 
 
 # Login a user and return a JWT key
@@ -86,11 +88,21 @@ def update_user(id):
     user = db.session.scalar(stmt)
     
     if user:
-        authorize(user.user_id)
+        authorize(id)
         user.name = user_info.get("name", user.name)
         user.email = user_info.get("email", user.email)
         user.password = user_info.get("password", user.password)
-        db.session.commit()
+        if user_info["is_admin"]:
+            authorize()
+            if user_info["is_admin"].lower() == "true":
+                user.is_admin = True
+            else:
+                user.is_admin = False
+        try:
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "Email address already in use"}, 409 
+        
         return UserSchema().dump(user), 200
     
     return {"error": "User not found"}, 404   

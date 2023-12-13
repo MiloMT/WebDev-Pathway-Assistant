@@ -7,8 +7,8 @@ class Stack(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     
-    name = db.Column(db.String(50), default="Anonymous")
-    description = db.Column(db.Text, nullable=False, unique=True)
+    name = db.Column(db.String(50), unique=True)
+    description = db.Column(db.Text, nullable=False)
     
     stack_tools = db.relationship("Stack_Tool", back_populates="stack")
     

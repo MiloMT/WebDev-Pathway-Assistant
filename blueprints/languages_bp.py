@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required
 from models.language import Language, LanguageSchema
 from setup import db
 from auth import authorize
+from sqlalchemy import exc
 
 
 languages_bp = Blueprint("languages", __name__, url_prefix="/languages")
@@ -27,8 +28,11 @@ def create_language():
     language_info = LanguageSchema(exclude=["id"]).load(request.json)
     language = Language(name = language_info["name"])
     
-    db.session.add(language)
-    db.session.commit()
+    try:
+        db.session.add(language)
+        db.session.commit()
+    except exc.IntegrityError:
+        return {"error": "The language name already exists"}, 409
     
     return LanguageSchema().dump(language), 201
 
@@ -60,7 +64,12 @@ def update_language(id):
     
     if language:
         language.name = language_info.get("name", language.name)
-        db.session.commit()
+        
+        try:
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "The language name already exists"}, 409
+        
         return LanguageSchema().dump(language), 200
     
     return {"error": "Language not found"}, 404   

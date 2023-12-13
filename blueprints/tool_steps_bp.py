@@ -37,14 +37,14 @@ def create_tool_step(tool_id):
     tool = db.session.scalar(stmt)
     
     if tool:
+        tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
+        tool_step = Tool_Step(
+            step_no = tool_step_info["step_no"],
+            description = tool_step_info.get("description", ""),
+            time_days = tool_step_info["time_days"],
+            tool_id = tool_id
+        )
         try:
-            tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
-            tool_step = Tool_Step(
-                step_no = tool_step_info["step_no"],
-                description = tool_step_info.get("description", ""),
-                time_days = tool_step_info["time_days"],
-                tool_id = tool_id
-            )
             db.session.add(tool_step)
             db.session.commit()
         except exc.IntegrityError:
@@ -94,7 +94,12 @@ def update_tool(tool_id, step_no):
             tool_step.step_no = tool_step_info.get("step_no", tool_step.step_no)
             tool_step.description = tool_step_info.get("description", tool_step.description)
             tool_step.time_days = tool_step_info.get("time_days", tool_step.time_days)
-            db.session.commit()
+            
+            try:
+                db.session.commit()
+            except exc.IntegrityError:
+                return {"error": "The selected step number already exists"}, 409
+            
             return Tool_StepSchema(exclude=["tool"]).dump(tool_step), 200
         
         return {"error": "Step not found"}, 404

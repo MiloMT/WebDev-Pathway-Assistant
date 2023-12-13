@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required
 from models.category import Category, CategorySchema
 from setup import db
 from auth import authorize
+from sqlalchemy import exc
 
 
 categories_bp = Blueprint("categories", __name__, url_prefix="/categories")
@@ -31,8 +32,11 @@ def create_category():
         description = category_info.get("description", "")
     )
     
-    db.session.add(category)
-    db.session.commit()
+    try:
+        db.session.add(category)
+        db.session.commit()
+    except exc.IntegrityError:
+        return {"error": "The category name already exists"}, 409
     
     return CategorySchema().dump(category), 201
 
@@ -65,7 +69,12 @@ def update_category(id):
     if category:
         category.name = category_info.get("name", category.name)
         category.description = category_info.get("description", category.description)
-        db.session.commit()
+        
+        try:
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "The category name already exists"}, 409
+        
         return CategorySchema().dump(category), 200
     
     return {"error": "Category not found"}, 404   

@@ -4,6 +4,7 @@ from models.tool import Tool, ToolSchema
 from blueprints.tool_steps_bp import tool_steps_bp
 from setup import db
 from auth import authorize
+from sqlalchemy import exc
 
 
 tools_bp = Blueprint("tools", __name__, url_prefix="/tools")
@@ -32,8 +33,11 @@ def create_tool():
         description = tool_info.get("description", "")
     )
     
-    db.session.add(tool)
-    db.session.commit()
+    try:
+        db.session.add(tool)
+        db.session.commit()
+    except exc.IntegrityError:
+            return {"error": "The tool name already exists"}, 409
     
     return ToolSchema().dump(tool), 201
 
@@ -66,7 +70,12 @@ def update_tool(id):
     if tool:
         tool.name = tool_info.get("name", tool.name)
         tool.description = tool_info.get("description", tool.description)
-        db.session.commit()
+        
+        try:
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "The tool name already exists"}, 409
+        
         return ToolSchema().dump(tool), 200
     
     return {"error": "Tool not found"}, 404   

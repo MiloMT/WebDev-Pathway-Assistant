@@ -4,6 +4,7 @@ from models.stack import Stack, StackSchema
 from setup import db
 from blueprints.stack_tools_bp import stack_tools_bp
 from auth import authorize
+from sqlalchemy import exc
 
 
 stacks_bp = Blueprint("stacks", __name__, url_prefix="/stacks")
@@ -33,8 +34,11 @@ def create_stack():
         description = stack_info.get("description", "")
     )
     
-    db.session.add(stack)
-    db.session.commit()
+    try:
+        db.session.add(stack)
+        db.session.commit()
+    except exc.IntegrityError:
+        return {"error": "The stack name already exists"}, 409
     
     return StackSchema(exclude=["stack_tools"]).dump(stack), 201
 
@@ -67,7 +71,12 @@ def update_stack(id):
     if stack:
         stack.name = stack_info.get("name", stack.name)
         stack.description = stack_info.get("description", stack.description)
-        db.session.commit()
+        
+        try:
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "The stack name already exists"}, 409
+        
         return StackSchema().dump(stack), 200
     
     return {"error": "Stack not found"}, 404   

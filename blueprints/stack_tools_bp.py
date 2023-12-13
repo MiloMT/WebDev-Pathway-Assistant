@@ -41,12 +41,11 @@ def create_stack_tool(stack_id):
         tool = db.session.scalar(stmt)
 
         if tool:
+            stack_tool = Stack_Tool(
+                stack_id = stack_id,
+                tool_id = tool_id
+            )
             try:
-                stack_tool = Stack_Tool(
-                    stack_id = stack_id,
-                    tool_id = tool_id
-                )
-            
                 db.session.add(stack_tool)
                 db.session.commit()
             except exc.IntegrityError:

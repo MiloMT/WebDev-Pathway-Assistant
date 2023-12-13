@@ -17,7 +17,7 @@ def all_tools():
     stmt = db.select(Tool).order_by("id")
     tools = db.session.scalars(stmt).all()
     
-    return ToolSchema(many=True, exclude=["tool_steps"]).dump(tools)
+    return ToolSchema(many=True, exclude=["tool_steps", "category.id", "language.id"]).dump(tools)
 
 
 # Create a tool

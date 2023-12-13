@@ -77,7 +77,7 @@ def update_stack(id):
         except exc.IntegrityError:
             return {"error": "The stack name already exists"}, 409
         
-        return StackSchema().dump(stack), 200
+        return StackSchema(exclude=["stack_tools"]).dump(stack), 200
     
     return {"error": "Stack not found"}, 404   
 

@@ -17,7 +17,7 @@ def all_tool_steps(tool_id):
     tool = db.session.scalar(stmt)
     
     if tool:
-        return Tool_StepSchema(many=True).dump(tool.tool_steps), 200
+        return Tool_StepSchema(many=True, exclude=["tool"]).dump(tool.tool_steps), 200
     return {"error": "Tool not found"}, 404
 
 
@@ -28,67 +28,92 @@ def create_tool_step(tool_id):
     
     authorize()
     
-    tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
+    stmt = db.select(Tool).filter_by(id = tool_id)
+    tool = db.session.scalar(stmt)
     
-    tool_step = Tool_Step(
-        step_no = tool_step_info["step_no"],
-        description = tool_step_info.get("description", ""),
-        time_days = tool_step_info["time_days"],
-        tool_id = tool_id
-    )
-    
-    db.session.add(tool_step)
-    db.session.commit()
-    
-    return Tool_StepSchema().dump(tool_step), 201
+    if tool:
+        tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
+        
+        tool_step = Tool_Step(
+            step_no = tool_step_info["step_no"],
+            description = tool_step_info.get("description", ""),
+            time_days = tool_step_info["time_days"],
+            tool_id = tool_id
+        )
+        
+        db.session.add(tool_step)
+        db.session.commit()
+        
+        return Tool_StepSchema(exclude=["tool"]).dump(tool_step), 201
+    return {"error": "Tool not found"}, 404
 
 
 # Get a single tool step
-# @tool_steps_bp.route("/<int:id>")
-# # @jwt_required()
-# def one_tool_step(tool_id, id):
+@tool_steps_bp.route("/<int:step_no>")
+def one_tool_step(tool_id, step_no):
     
-#     stmt = db.select(Tool).filter_by(id = tool_id)
-#     tool = db.session.scalar(stmt)
+    stmt = db.select(Tool).filter_by(id = tool_id)
+    tool = db.session.scalar(stmt)
     
-#     if tool:
-#         stmt = db.select(Tool_Step).filter_by(id = id)
-#         return Tool_StepSchema().dump(tool.tool_steps), 200
-#     return {"error": "Tool not found"}, 404
+    if tool:
+        stmt = db.select(Tool_Step).filter_by(tool_id = tool_id, step_no = step_no)
+        tool_step = db.session.scalar(stmt)
+        
+        if tool_step:
+            return Tool_StepSchema(exclude=["tool"]).dump(tool_step), 200
+        
+        return {"error": "Step not found"}, 404
+    
+    return {"error": "Tool not found"}, 404
 
 
-# # Update a single tool step
-# @tools_bp.route("/<int:id>", methods=["PUT", "PATCH"])
-# # @jwt_required()
-# def update_tool(id):
+# Update a single tool step
+@tool_steps_bp.route("/<int:step_no>", methods=["PUT", "PATCH"])
+@jwt_required()
+def update_tool(tool_id, step_no):
     
-#     tool_info = ToolSchema(exclude=["id"]).load(request.json)
+    authorize()
     
-#     stmt = db.select(Tool).filter_by(id = id)
-#     tool = db.session.scalar(stmt)
+    tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
     
-#     if tool:
-#         # authorize(tool.user_id)
-#         tool.name = tool_info.get("name", tool.name)
-#         tool.description = tool_info.get("description", tool.description)
-#         db.session.commit()
-#         return ToolSchema().dump(tool), 200
+    stmt = db.select(Tool).filter_by(id = tool_id)
+    tool = db.session.scalar(stmt)
     
-#     return {"error": "Tool not found"}, 404   
+    if tool:
+        stmt = db.select(Tool_Step).filter_by(tool_id = tool_id, step_no = step_no)
+        tool_step = db.session.scalar(stmt)
+        
+        if tool_step:
+            tool_step.step_no = tool_step_info.get("step_no", tool_step.step_no)
+            tool_step.description = tool_step_info.get("description", tool_step.description)
+            tool_step.time_days = tool_step_info.get("time_days", tool_step.time_days)
+            db.session.commit()
+            return Tool_StepSchema(exclude=["tool"]).dump(tool_step), 200
+        
+        return {"error": "Step not found"}, 404
+    
+    return {"error": "Tool not found"}, 404   
 
 
-# # Delete a single tool step
-# @tools_bp.route("/<int:id>", methods=["DELETE"])
-# # @jwt_required()
-# def delete_tool(id):
+# Delete a single tool step
+@tool_steps_bp.route("/<int:step_no>", methods=["DELETE"])
+@jwt_required()
+def delete_tool(tool_id, step_no):
     
-#     stmt = db.select(Tool).filter_by(id = id)
-#     tool = db.session.scalar(stmt)
+    authorize()
     
-#     if tool:
-#         # authorize(tool.user_id)
-#         db.session.delete(tool)
-#         db.session.commit()
-#         return {"status": f"{tool.name} has been deleted"}, 200
+    stmt = db.select(Tool).filter_by(id = tool_id)
+    tool = db.session.scalar(stmt)
     
-#     return {"error": "Tool not found"}, 404
+    if tool:
+        stmt = db.select(Tool_Step).filter_by(tool_id = tool_id, step_no = step_no)
+        tool_step = db.session.scalar(stmt)
+        
+        if tool_step:
+            db.session.delete(tool_step)
+            db.session.commit()
+            return {"status": f"Tool Step {tool_step.step_no} has been deleted"}, 200
+    
+        return {"error": "Step not found"}, 404
+    
+    return {"error": "Tool not found"}, 404

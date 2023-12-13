@@ -31,7 +31,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the names, IDs and descriptions of all categories within the table.
 
-##### Example Response
+> Example Response
 
 ```
 [
@@ -59,7 +59,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to create a new category in the categories table and returns a JSON of the name, ID and description of the created category.
 
-##### Example Request
+> Example Request
 
 ```
 {
@@ -68,7 +68,7 @@ This API intends to remedy the above by creating a single source of truth that u
 }
 ```
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -86,7 +86,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the name, ID and description of a single category.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -102,7 +102,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to make adjustments to fields from an existing category and returns a JSON of the updated name, ID and description of the affected category.
 
-##### Example Request
+> Example Request
 
 ```
 {
@@ -111,7 +111,7 @@ This API intends to remedy the above by creating a single source of truth that u
 }
 ```
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -127,7 +127,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to delete single categories, provided there are no dependencies related to that category, and returns a JSON confirming the name of the category that has been deleted.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -143,7 +143,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the names and IDs of all languages within the table.
 
-##### Example Response
+> Example Response
 
 ```
 [
@@ -168,7 +168,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to create a new language in the languages table and returns a JSON with the ID and name of the created language.
 
-##### Example Request
+> Example Request
 
 ```
 {
@@ -176,7 +176,7 @@ This API intends to remedy the above by creating a single source of truth that u
 }
 ```
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -193,7 +193,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the name and ID of a single language.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -208,7 +208,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to make adjustments to fields from an existing language and returns a JSON of the updated name and ID of the affected language.
 
-##### Example Request
+> Example Request
 
 ```
 {
@@ -216,7 +216,7 @@ This API intends to remedy the above by creating a single source of truth that u
 }
 ```
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -231,7 +231,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to delete single languages, provided there are no dependencies related to that language, and returns a JSON confirming the name of the language that has been deleted.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -247,7 +247,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the names, IDs and descriptions of all stacks within the table.
 
-##### Example Response
+> Example Response
 
 ```
 [
@@ -275,7 +275,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to create a new stack in the stacks table and returns a JSON with the ID and name of the created language.
 
-##### Example Request
+> Example Request
 
 ```
 {
@@ -284,7 +284,7 @@ This API intends to remedy the above by creating a single source of truth that u
 }
 ```
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -302,7 +302,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the name, ID and description of a single stack.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -318,7 +318,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to make adjustments to fields from an existing stack and returns a JSON of the updated name, ID and description of the affected stack.
 
-##### Example Request
+> Example Request
 
 ```
 {
@@ -327,7 +327,7 @@ This API intends to remedy the above by creating a single source of truth that u
 }
 ```
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -343,7 +343,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to delete single stacks, provided there are no dependencies related to that stack, and returns a JSON confirming the name of the stack that has been deleted.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -359,7 +359,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the names and IDs of all tools related to a single stack.
 
-##### Example Response
+> Example Response
 
 ```
 [
@@ -390,7 +390,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Provides a JSON containing the names and ID of the tool that has been added to the stack.
 
-##### Example Request
+> Example Request
 
 ```
 {
@@ -400,7 +400,7 @@ This API intends to remedy the above by creating a single source of truth that u
 }
 ```
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -421,7 +421,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description: Allows an admin to delete single tools from stacks, and returns a JSON confirming the name of the tool that has been deleted from the relevant stack.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -437,7 +437,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the names, IDs and descriptions of tools within the table as well as their relevant category name and language name.
 
-##### Example Response
+> Example Response
 
 ```
 [
@@ -483,13 +483,13 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description:
 
-##### Example Request
+> Example Request
 
 ```
 
 ```
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -503,7 +503,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the name, ID and description of a single tool as well as their relevant category name and language name.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -525,7 +525,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description:
 
-##### Example Request
+> Example Request
 
 ```
 {
@@ -540,7 +540,7 @@ This API intends to remedy the above by creating a single source of truth that u
 }
 ```
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -552,7 +552,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description:
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -566,7 +566,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the description, step number and learning length in days of the tool steps from a single tool.
 
-##### Example Response
+> Example Response
 
 ```
 [
@@ -594,13 +594,13 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description:
 
-##### Example Request
+> Example Request
 
 ```
 
 ```
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -614,7 +614,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the description, step number and learning length in days of a single tool step.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -630,13 +630,13 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description:
 
-##### Example Request
+> Example Request
 
 ```
 
 ```
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -648,7 +648,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required.
 - Description:
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -662,7 +662,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description: Provides a JSON containing the names, IDs, emails and admin status of all users within the table.
 
-##### Example Response
+> Example Response
 
 ```
 [
@@ -693,13 +693,13 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description:
 
-##### Example Request
+> Example Request
 
 ```
 
 ```
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -713,13 +713,13 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: null
 - Description:
 
-##### Example Request
+> Example Request
 
 ```
 
 ```
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -733,7 +733,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
 - Description: Provides a JSON containing the name, ID and email of a single user.
 
-##### Example Response
+> Example Response
 
 ```
 {
@@ -749,13 +749,13 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user. Admin rights required to update administrator status.
 - Description:
 
-##### Example Request
+> Example Request
 
 ```
 
 ```
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -767,7 +767,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
 - Description:
 
-##### Example Response
+> Example Response
 
 ```
 
@@ -781,7 +781,7 @@ This API intends to remedy the above by creating a single source of truth that u
 - Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
 - Description: Provides a JSON containing the name and ID of all tools related to a single user.
 
-##### Example Response
+> Example Response
 
 ```
 [

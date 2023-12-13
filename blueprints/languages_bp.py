@@ -1,8 +1,8 @@
 from flask import Blueprint, request
-# from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
 from models.language import Language, LanguageSchema
 from setup import db
-# from auth import authorize
+from auth import authorize
 
 
 languages_bp = Blueprint("languages", __name__, url_prefix="/languages")
@@ -10,7 +10,6 @@ languages_bp = Blueprint("languages", __name__, url_prefix="/languages")
 
 # Get all languages
 @languages_bp.route("/")
-# @jwt_required()
 def all_languages():
     
     stmt = db.select(Language).order_by("id")
@@ -20,8 +19,10 @@ def all_languages():
 
 # Create a language
 @languages_bp.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def create_language():
+    
+    authorize()
     
     language_info = LanguageSchema(exclude=["id"]).load(request.json)
     
@@ -37,14 +38,12 @@ def create_language():
 
 # Get a single language
 @languages_bp.route("/<int:id>")
-# @jwt_required()
 def one_language(id):
     
     stmt = db.select(Language).filter_by(id = id)
     language = db.session.scalar(stmt)
     
     if language:
-        # authorize(language.user_id)
         return LanguageSchema().dump(language)
     
     return {"error": "Language not found"}, 404
@@ -52,8 +51,10 @@ def one_language(id):
 
 # Update a single language
 @languages_bp.route("/<int:id>", methods=["PUT", "PATCH"])
-# @jwt_required()
+@jwt_required()
 def update_language(id):
+    
+    authorize()
     
     language_info = LanguageSchema(exclude=["id"]).load(request.json)
     
@@ -61,7 +62,6 @@ def update_language(id):
     language = db.session.scalar(stmt)
     
     if language:
-        # authorize(language.user_id)
         language.name = language_info.get("name", language.name)
         db.session.commit()
         return LanguageSchema().dump(language), 200
@@ -71,14 +71,15 @@ def update_language(id):
 
 # Delete a single language
 @languages_bp.route("/<int:id>", methods=["DELETE"])
-# @jwt_required()
+@jwt_required()
 def delete_language(id):
+    
+    authorize()
     
     stmt = db.select(Language).filter_by(id = id)
     language = db.session.scalar(stmt)
     
     if language:
-        # authorize(language.user_id)
         db.session.delete(language)
         db.session.commit()
         return {"status": f"{language.name} has been deleted"}, 200

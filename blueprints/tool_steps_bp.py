@@ -1,9 +1,9 @@
 from flask import Blueprint, request
-# from flask_jwt_extended import jwt_required, get_jwt_identity
-from models.tool import Tool, ToolSchema
+from flask_jwt_extended import jwt_required
+from models.tool import Tool
 from models.tool_step import Tool_Step, Tool_StepSchema
 from setup import db
-# from auth import authorize
+from auth import authorize
 
 
 tool_steps_bp = Blueprint("tool_steps", __name__, url_prefix="/<int:tool_id>/steps")
@@ -11,7 +11,6 @@ tool_steps_bp = Blueprint("tool_steps", __name__, url_prefix="/<int:tool_id>/ste
 
 # Get all tool steps
 @tool_steps_bp.route("/")
-# @jwt_required()
 def all_tool_steps(tool_id):
     
     stmt = db.select(Tool).filter_by(id = tool_id)
@@ -24,8 +23,10 @@ def all_tool_steps(tool_id):
 
 # Create a tool step
 @tool_steps_bp.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def create_tool_step(tool_id):
+    
+    authorize()
     
     tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
     
@@ -42,7 +43,7 @@ def create_tool_step(tool_id):
     return Tool_StepSchema().dump(tool_step), 201
 
 
-# Get a single tool
+# Get a single tool step
 # @tool_steps_bp.route("/<int:id>")
 # # @jwt_required()
 # def one_tool_step(tool_id, id):
@@ -56,7 +57,7 @@ def create_tool_step(tool_id):
 #     return {"error": "Tool not found"}, 404
 
 
-# # Update a single tool
+# # Update a single tool step
 # @tools_bp.route("/<int:id>", methods=["PUT", "PATCH"])
 # # @jwt_required()
 # def update_tool(id):
@@ -76,7 +77,7 @@ def create_tool_step(tool_id):
 #     return {"error": "Tool not found"}, 404   
 
 
-# # Delete a single tool
+# # Delete a single tool step
 # @tools_bp.route("/<int:id>", methods=["DELETE"])
 # # @jwt_required()
 # def delete_tool(id):

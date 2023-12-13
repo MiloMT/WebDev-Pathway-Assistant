@@ -5,8 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from os import environ
 from marshmallow.exceptions import ValidationError
-
-from marshmallow import ValidationError
+from flask.json import jsonify
 
 app = Flask(__name__)
 
@@ -20,7 +19,7 @@ jwt = JWTManager(app)
 
 @app.errorhandler(401)
 def unauthorized(err):
-    return {"error": "You are not authorized to access this resource"}
+    return {"error": "You are not authorized to access this URL"}
 
 @app.errorhandler(ValidationError)
 def validation_error(err):

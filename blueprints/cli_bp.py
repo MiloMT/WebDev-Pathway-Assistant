@@ -1,10 +1,10 @@
-from datetime import date
+# from datetime import date
 from setup import db, bcrypt
 from flask import Blueprint
 
 from models.category import Category
 from models.language import Language
-from models.plan import Plan
+# from models.user_plan import User_Plan
 from models.stack_tool import Stack_Tool
 from models.stack import Stack
 from models.tool_step import Tool_Step
@@ -147,26 +147,26 @@ def db_seed():
     db.session.commit()
     
     # Plans
-    plans = [
-        Plan(
-            name = "Plan 1",
-            end_date = f"{date.today()}",
-            user_id = users[0].id
-        ),
-        Plan(
-            name = "Plan 2",
-            end_date = f"{date.today()}",
-            user_id = users[1].id
-        ),
-        Plan(
-            name = "Plan 3",
-            end_date = f"{date.today()}",
-            user_id = users[0].id
-        ),
-    ]
+    # user_plans = [
+    #     User_Plan(
+    #         name = "Plan 1",
+    #         end_date = f"{date.today()}",
+    #         user_id = users[0].id
+    #     ),
+    #     User_Plan(
+    #         name = "Plan 2",
+    #         end_date = f"{date.today()}",
+    #         user_id = users[1].id
+    #     ),
+    #     User_Plan(
+    #         name = "Plan 3",
+    #         end_date = f"{date.today()}",
+    #         user_id = users[0].id
+    #     ),
+    # ]
     
-    db.session.add_all(plans)
-    db.session.commit()
+    # db.session.add_all(user_plans)
+    # db.session.commit()
 
     # Stack Tools
     stack_tools = [

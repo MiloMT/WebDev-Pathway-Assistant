@@ -1,8 +1,8 @@
 from flask import Blueprint, request
-# from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
 from models.category import Category, CategorySchema
 from setup import db
-# from auth import authorize
+from auth import authorize
 
 
 categories_bp = Blueprint("categories", __name__, url_prefix="/categories")
@@ -10,7 +10,6 @@ categories_bp = Blueprint("categories", __name__, url_prefix="/categories")
 
 # Get all categories
 @categories_bp.route("/")
-# @jwt_required()
 def all_categories():
     
     stmt = db.select(Category).order_by("id")
@@ -20,8 +19,10 @@ def all_categories():
 
 # Create a category
 @categories_bp.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def create_category():
+    
+    authorize()
     
     category_info = CategorySchema(exclude=["id"]).load(request.json)
     
@@ -38,14 +39,12 @@ def create_category():
 
 # Get a single category
 @categories_bp.route("/<int:id>")
-# @jwt_required()
 def one_category(id):
     
     stmt = db.select(Category).filter_by(id = id)
     category = db.session.scalar(stmt)
     
     if category:
-        # authorize(category.user_id)
         return CategorySchema().dump(category)
     
     return {"error": "Category not found"}, 404
@@ -53,8 +52,10 @@ def one_category(id):
 
 # Update a single category
 @categories_bp.route("/<int:id>", methods=["PUT", "PATCH"])
-# @jwt_required()
+@jwt_required()
 def update_category(id):
+    
+    authorize()
     
     category_info = CategorySchema(exclude=["id"]).load(request.json)
     
@@ -62,7 +63,6 @@ def update_category(id):
     category = db.session.scalar(stmt)
     
     if category:
-        # authorize(category.user_id)
         category.name = category_info.get("name", category.name)
         category.description = category_info.get("description", category.description)
         db.session.commit()
@@ -73,14 +73,15 @@ def update_category(id):
 
 # Delete a single category
 @categories_bp.route("/<int:id>", methods=["DELETE"])
-# @jwt_required()
+@jwt_required()
 def delete_category(id):
+    
+    authorize()
     
     stmt = db.select(Category).filter_by(id = id)
     category = db.session.scalar(stmt)
     
     if category:
-        # authorize(category.user_id)
         db.session.delete(category)
         db.session.commit()
         return {"status": f"{category.name} has been deleted"}, 200

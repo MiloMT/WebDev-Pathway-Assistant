@@ -1,9 +1,9 @@
 from flask import Blueprint, request
-# from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
 from models.tool import Tool, ToolSchema
 from blueprints.tool_steps_bp import tool_steps_bp
 from setup import db
-# from auth import authorize
+from auth import authorize
 
 
 tools_bp = Blueprint("tools", __name__, url_prefix="/tools")
@@ -11,7 +11,6 @@ tools_bp.register_blueprint(tool_steps_bp)
 
 # Get all tools
 @tools_bp.route("/")
-# @jwt_required()
 def all_tools():
     
     stmt = db.select(Tool).order_by("id")
@@ -21,8 +20,10 @@ def all_tools():
 
 # Create a tool
 @tools_bp.route("/", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def create_tool():
+    
+    authorize()
     
     tool_info = ToolSchema(exclude=["id"]).load(request.json)
     
@@ -39,14 +40,12 @@ def create_tool():
 
 # Get a single tool
 @tools_bp.route("/<int:id>")
-# @jwt_required()
 def one_tool(id):
     
     stmt = db.select(Tool).filter_by(id = id)
     tool = db.session.scalar(stmt)
     
     if tool:
-        # authorize(tool.user_id)
         return ToolSchema().dump(tool)
     
     return {"error": "Tool not found"}, 404
@@ -54,8 +53,10 @@ def one_tool(id):
 
 # Update a single tool
 @tools_bp.route("/<int:id>", methods=["PUT", "PATCH"])
-# @jwt_required()
+@jwt_required()
 def update_tool(id):
+    
+    authorize()
     
     tool_info = ToolSchema(exclude=["id"]).load(request.json)
     
@@ -74,14 +75,15 @@ def update_tool(id):
 
 # Delete a single tool
 @tools_bp.route("/<int:id>", methods=["DELETE"])
-# @jwt_required()
+@jwt_required()
 def delete_tool(id):
+    
+    authorize()
     
     stmt = db.select(Tool).filter_by(id = id)
     tool = db.session.scalar(stmt)
     
     if tool:
-        # authorize(tool.user_id)
         db.session.delete(tool)
         db.session.commit()
         return {"status": f"{tool.name} has been deleted"}, 200

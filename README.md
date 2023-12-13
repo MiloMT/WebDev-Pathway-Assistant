@@ -23,447 +23,788 @@ This API intends to remedy the above by creating a single source of truth that u
 
 ## End Points
 
-### /
-
-- HTTP Request Verb: GET
-- Required Data: N/A
-- Expected Response: A '200 OK' response with a json of API end points.
-- Authentication: N/A
-- Description: Provides an index of all the end points available with this API.
-
-**Example**
-
-
-
 ### /categories
 
-- HTTP Request Verb: GET
-- Required Data: N/A
-- Expected Response: A '200 OK' response with a json of category names and IDs.
-- Authentication: JWT Bearer Token Required
-- Description: Provides a JSON containing the names and IDs of all categories within the table.
-
-**Example**
-
-
-
-- HTTP Request Verb: POST
-- Required Data: name (char(50), required), description (text)
-- Expected Response: A '201 CREATED' response with a json of the category name and description.
-- Authentication: JWT Bearer Token Required, User with Admin Privledges required.
-- Description: Allows an admin to create a new category in the categories table.
-
-**Example**
-
-
-
-#### /categories/\<id>  
-
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: PUT/PATCH
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: DELETE
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-### /tools  
-
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: POST
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-#### /tools/\<id>  
-
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: PUT/PATCH
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: DELETE
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-#### /tools/\<id>/steps  
-
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: POST
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-#### /tools/\<id>/steps/\<id>  
-
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: PUT/PATCH
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: DELETE
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
+- HTTP Request Verb: ```GET```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the names, IDs and descriptions of all categories within the table.
+
+##### Example Response
+
+```
+[
+	{
+		"description": "A framework",
+		"id": 1,
+		"name": "Framework"
+	},
+	{
+		"description": "A tool",
+		"id": 2,
+		"name": "Tool"
+	},
+	{
+		"description": "A software",
+		"id": 3,
+		"name": "Software"
+	}
+]
+```
+
+- HTTP Request Verb: ```POST```
+- Required Data: name (string(50), required), description (text)
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to create a new category in the categories table and returns a JSON of the name, ID and description of the created category.
+
+##### Example Request
+
+```
+{
+	"name":"Created Category",
+	"description":"Created Category Description"
+}
+```
+
+##### Example Response
+
+```
+{
+	"description": "Created Category Description",
+	"id": 4,
+	"name": "Created Category"
+}
+```
+
+#### /categories/\<id> 
+
+- HTTP Request Verb: ```GET```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the name, ID and description of a single category.
+
+##### Example Response
+
+```
+{
+	"description": "A framework",
+	"id": 1,
+	"name": "Framework"
+}
+```
+
+- HTTP Request Verb: ```PUT``` ```PATCH```
+- Required Data: name (char(50)), description (text) *missing fields will default to current data*
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to make adjustments to fields from an existing category and returns a JSON of the updated name, ID and description of the affected category.
+
+##### Example Request
+
+```
+{
+	"name":"Category Changed",
+	"description":"Changed Description"
+}
+```
+
+##### Example Response
+
+```
+{
+	"description": "Changed Description",
+	"id": 1,
+	"name": "Category Changed"
+}
+```
+
+- HTTP Request Verb: ```DELETE```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to delete single categories, provided there are no dependencies related to that category, and returns a JSON confirming the name of the category that has been deleted.
+
+##### Example Response
+
+```
+{
+	"status": "Created Category has been deleted"
+}
+```
 
 ### /languages  
 
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+- HTTP Request Verb: ```GET```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the names and IDs of all languages within the table.
 
-**Example**
+##### Example Response
 
+```
+[
+	{
+		"id": 1,
+		"name": "Python"
+	},
+	{
+		"id": 2,
+		"name": "Javascript"
+	},
+	{
+		"id": 3,
+		"name": "C#"
+	}
+]
+```
 
+- HTTP Request Verb: ```POST```
+- Required Data: name (string(50))
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to create a new language in the languages table and returns a JSON with the ID and name of the created language.
 
-- HTTP Request Verb: POST
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+##### Example Request
 
-**Example**
+```
+{
+	"name":"Test Language"
+}
+```
 
+##### Example Response
 
+```
+{
+	"id": 4,
+	"name": "Test Language"
+}
+```
 
 #### /languages/\<id>  
 
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+- HTTP Request Verb: ```GET```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the name and ID of a single language.
 
-**Example**
+##### Example Response
 
+```
+{
+	"id": 1,
+	"name": "Python"
+}
+```
 
+- HTTP Request Verb: ```PUT``` ```PATCH```
+- Required Data: name (string(50)) *missing fields will default to current data*
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to make adjustments to fields from an existing language and returns a JSON of the updated name and ID of the affected language.
 
-- HTTP Request Verb: PUT/PATCH
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+##### Example Request
 
-**Example**
+```
+{
+	"name":"language Changed"
+}
+```
 
+##### Example Response
 
+```
+{
+	"id": 1,
+	"name": "language Changed"
+}
+```
 
-- HTTP Request Verb: DELETE
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+- HTTP Request Verb: ```DELETE```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to delete single languages, provided there are no dependencies related to that language, and returns a JSON confirming the name of the language that has been deleted.
 
-**Example**
+##### Example Response
 
-
+```
+{
+	"status": "Test Language has been deleted"
+}
+```
 
 ### /stacks  
 
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+- HTTP Request Verb: ```GET```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the names, IDs and descriptions of all stacks within the table.
 
-**Example**
+##### Example Response
 
+```
+[
+	{
+		"description": "Stack 1",
+		"id": 1,
+		"name": "Stack 1"
+	},
+	{
+		"description": "Stack 2",
+		"id": 2,
+		"name": "Stack 2"
+	},
+	{
+		"description": "Stack 3",
+		"id": 3,
+		"name": "Stack 3"
+	}
+]
+```
 
+- HTTP Request Verb: ```POST```
+- Required Data: name (string(50)), description (text)
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to create a new stack in the stacks table and returns a JSON with the ID and name of the created language.
 
-- HTTP Request Verb: POST
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+##### Example Request
 
-**Example**
+```
+{
+	"name":"New Stack",
+	"description": "New Stack descriptions"
+}
+```
 
+##### Example Response
 
+```
+{
+	"description": "New Stack descriptions",
+	"id": 4,
+	"name": "New Stack"
+}
+```
 
 #### /stacks/\<id>  
 
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+- HTTP Request Verb: ```GET```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the name, ID and description of a single stack.
 
-**Example**
+##### Example Response
 
+```
+{
+	"description": "Stack 1",
+	"id": 1,
+	"name": "Stack 1"
+}
+```
 
+- HTTP Request Verb: ```PUT``` ```PATCH```
+- Required Data: name (string(50)), description (text) *missing fields will default to current data*
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to make adjustments to fields from an existing stack and returns a JSON of the updated name, ID and description of the affected stack.
 
-- HTTP Request Verb: PUT/PATCH
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+##### Example Request
 
-**Example**
+```
+{
+	"name":"Changed Stack",
+	"description": "Changed Stack description"
+}
+```
 
+##### Example Response
 
+```
+{
+	"description": "Changed Stack description",
+	"id": 1,
+	"name": "Changed Stack"
+}
+```
 
-- HTTP Request Verb: DELETE
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+- HTTP Request Verb: ```DELETE```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to delete single stacks, provided there are no dependencies related to that stack, and returns a JSON confirming the name of the stack that has been deleted.
 
-**Example**
+##### Example Response
 
-
+```
+{
+	"status": "New Stack has been deleted"
+}
+```
 
 #### /stacks/\<id>/tools  
 
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
+- HTTP Request Verb: ```GET```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the names and IDs of all tools related to a single stack.
+
+##### Example Response
+
+```
+[
+	{
+		"tool": {
+			"id": 1,
+			"name": "Tool 1"
+		}
+	},
+	{
+		"tool": {
+			"id": 2,
+			"name": "Tool 2"
+		}
+	},
+	{
+		"tool": {
+			"id": 3,
+			"name": "Tool 3"
+		}
+	}
+]
+```
+
+- HTTP Request Verb: ```POST```
+- Required Data: tool.id (int, foreign key, in a nested dictionary)
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Provides a JSON containing the names and ID of the tool that has been added to the stack.
+
+##### Example Request
+
+```
+{
+	"tool": {
+		"id": "3"
+	}
+}
+```
+
+##### Example Response
+
+```
+{
+	"tool": {
+		"id": 3,
+		"name": "Tool 3"
+	}
+}
+```
+
+#### /stacks/\<id>/tools/\<id>  
+
+
+
+- HTTP Request Verb: ```DELETE```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to delete single tools from stacks, and returns a JSON confirming the name of the tool that has been deleted from the relevant stack.
+
+##### Example Response
+
+```
+{
+	"status": "Tool 3 has been removed"
+}
+```
+
+### /tools 
+
+- HTTP Request Verb: ```GET```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the names, IDs and descriptions of tools within the table as well as their relevant category name and language name.
+
+##### Example Response
+
+```
+[
+	{
+		"category": {
+			"name": "Framework"
+		},
+		"description": "Tool 1",
+		"id": 1,
+		"language": {
+			"name": "Python"
+		},
+		"name": "Tool 1"
+	},
+	{
+		"category": {
+			"name": "Tool"
+		},
+		"description": "Tool 2",
+		"id": 2,
+		"language": {
+			"name": "Javascript"
+		},
+		"name": "Tool 2"
+	},
+	{
+		"category": {
+			"name": "Software"
+		},
+		"description": "Tool 3",
+		"id": 3,
+		"language": {
+			"name": "C#"
+		},
+		"name": "Tool 3"
+	}
+]
+```
+
+- HTTP Request Verb: ```POST```
+- Required Data: name (string(50)), description (text), category_id (int, foreign key), language_id (int, foreign key)
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
 - Description:
 
-**Example**
+##### Example Request
 
+```
 
+```
 
-#### /stacks/\<id>/languages  
+##### Example Response
 
-- HTTP Request Verb: GET
+```
+
+```
+
+#### /tools/\<id>  
+
+- HTTP Request Verb: ```GET```
 - Required Data:
-- Expected Response:
-- Authentication:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the name, ID and description of a single tool as well as their relevant category name and language name.
+
+##### Example Response
+
+```
+{
+	"category": {
+		"name": "Framework"
+	},
+	"description": "Tool 1",
+	"id": 1,
+	"language": {
+		"name": "Python"
+	},
+	"name": "Tool 1"
+}
+```
+
+- HTTP Request Verb: ```PUT``` ```PATCH```
+- Required Data: name (string(50)), description (text), category.id (int, foreign key, in a nested dictionary), language.id (int, foreign key, in a nested dictionary) *missing fields will default to current data*
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
 - Description:
 
-**Example**
+##### Example Request
 
+```
+{
+	"name":"Changed tool",
+	"description": "Changed tool description",
+	"category": {
+		"id": "2"
+	},
+	"language": {
+		"id": "2"
+	}
+}
+```
 
+##### Example Response
+
+```
+
+```
+
+- HTTP Request Verb: ```DELETE```
+- Required Data:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description:
+
+##### Example Response
+
+```
+
+```
+
+#### /tools/\<id>/steps  
+
+- HTTP Request Verb: ```GET```
+- Required Data:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the description, step number and learning length in days of the tool steps from a single tool.
+
+##### Example Response
+
+```
+[
+	{
+		"description": "The first step",
+		"step_no": 1,
+		"time_days": 2
+	},
+	{
+		"description": "The second step",
+		"step_no": 2,
+		"time_days": 1
+	},
+	{
+		"description": "The second step",
+		"step_no": 3,
+		"time_days": 3
+	}
+]
+```
+
+- HTTP Request Verb: ```POST```
+- Required Data: step_no (int), description (text), time_days (int), tool_id (int, foreign key)
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description:
+
+##### Example Request
+
+```
+
+```
+
+##### Example Response
+
+```
+
+```
+
+#### /tools/\<id>/steps/\<id>  
+
+- HTTP Request Verb: ```GET```
+- Required Data:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the description, step number and learning length in days of a single tool step.
+
+##### Example Response
+
+```
+{
+	"description": "The first step",
+	"step_no": 1,
+	"time_days": 2
+}
+```
+
+- HTTP Request Verb: ```PUT``` ```PATCH```
+- Required Data: *missing fields will default to current data*
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description:
+
+##### Example Request
+
+```
+
+```
+
+##### Example Response
+
+```
+
+```
+
+- HTTP Request Verb: ```DELETE```
+- Required Data:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description:
+
+##### Example Response
+
+```
+
+```
 
 ### /users  
 
-- HTTP Request Verb: GET
+- HTTP Request Verb: ```GET```
 - Required Data:
-- Expected Response:
-- Authentication:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: null
+- Description: Provides a JSON containing the names, IDs, emails and admin status of all users within the table.
+
+##### Example Response
+
+```
+[
+	{
+		"email": "admin@test.com",
+		"id": 1,
+		"is_admin": true,
+		"name": "Admin User"
+	},
+	{
+		"email": "test@test.com",
+		"id": 2,
+		"is_admin": false,
+		"name": "Test User"
+	},
+	{
+		"email": "test12345@test.com",
+		"id": 3,
+		"is_admin": true,
+		"name": "changed user"
+	}
+]
+```
+
+- HTTP Request Verb: ```POST```
+- Required Data: email (text), password (text), name (text), is_admin (boolean, either "True" or "False", requires admin privledges)
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: null
 - Description:
 
-**Example**
+##### Example Request
 
+```
 
+```
 
-- HTTP Request Verb: POST
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+##### Example Response
 
-**Example**
+```
 
-
-
-#### /users/register  
-
-- HTTP Request Verb: POST
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
+```
 
 #### /users/login  
 
-- HTTP Request Verb: POST
+- HTTP Request Verb: ```POST```
 - Required Data:
-- Expected Response:
-- Authentication:
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: null
 - Description:
 
-**Example**
+##### Example Request
 
+```
 
+```
+
+##### Example Response
+
+```
+
+```
 
 #### /users/\<id>  
 
-- HTTP Request Verb: GET
+- HTTP Request Verb: ```GET```
 - Required Data:
-- Expected Response:
-- Authentication:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
+- Description: Provides a JSON containing the name, ID and email of a single user.
+
+##### Example Response
+
+```
+{
+	"email": "admin@test.com",
+	"id": 1,
+	"name": "Admin User"
+}
+```
+
+- HTTP Request Verb: ```PUT``` ```PATCH```
+- Required Data: *missing fields will default to current data*
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user. Admin rights required to update administrator status.
 - Description:
 
-**Example**
+##### Example Request
 
+```
 
+```
 
-- HTTP Request Verb: PUT/PATCH
+##### Example Response
+
+```
+
+```
+
+- HTTP Request Verb: ```DELETE```
 - Required Data:
-- Expected Response:
-- Authentication:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
 - Description:
 
-**Example**
+##### Example Response
 
+```
 
-
-- HTTP Request Verb: DELETE
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
+```
 
 #### /users/\<id>/tools  
 
-- HTTP Request Verb: GET
+- HTTP Request Verb: ```GET```
 - Required Data:
-- Expected Response:
-- Authentication:
-- Description:
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
+- Description: Provides a JSON containing the name and ID of all tools related to a single user.
 
-**Example**
+##### Example Response
 
-
-
-#### /users/\<id>/plans  
-
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-#### /users/\<id>/plans/generate  
-
-- HTTP Request Verb: POST
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-#### /users/\<id>/plans/\<id>  
-
-- HTTP Request Verb: GET
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
-
-- HTTP Request Verb: DELETE
-- Required Data:
-- Expected Response:
-- Authentication:
-- Description:
-
-**Example**
-
-
+```
+[
+	{
+		"tool": {
+			"id": 1,
+			"name": "Tool 1"
+		}
+	},
+	{
+		"tool": {
+			"id": 2,
+			"name": "Tool 2"
+		}
+	},
+	{
+		"tool": {
+			"id": 3,
+			"name": "Tool 3"
+		}
+	}
+]
+```
 
 ## ERD
 

@@ -45,7 +45,7 @@ def create_stack():
 
 # Get a single stack
 @stacks_bp.route("/<int:id>")
-def one_stack(id):
+def get_stack(id):
     
     stmt = db.select(Stack).filter_by(id = id)
     stack = db.session.scalar(stmt)
@@ -93,8 +93,12 @@ def delete_stack(id):
     stack = db.session.scalar(stmt)
     
     if stack:
-        db.session.delete(stack)
-        db.session.commit()
+        try:
+            db.session.delete(stack)
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "This stack is linked to other resources. Dependencies must be removed first."}, 409
+            
         return {"status": f"{stack.name} has been deleted"}, 200
     
     return {"error": "Stack not found"}, 404

@@ -42,10 +42,10 @@ def create_category():
 
 
 # Get a single category
-@categories_bp.route("/<int:id>")
-def one_category(id):
+@categories_bp.route("/<int:category_id>")
+def get_category(category_id):
     
-    stmt = db.select(Category).filter_by(id = id)
+    stmt = db.select(Category).filter_by(id = category_id)
     category = db.session.scalar(stmt)
     
     if category:
@@ -55,15 +55,15 @@ def one_category(id):
 
 
 # Update a single category
-@categories_bp.route("/<int:id>", methods=["PUT", "PATCH"])
+@categories_bp.route("/<int:category_id>", methods=["PUT", "PATCH"])
 @jwt_required()
-def update_category(id):
+def update_category(category_id):
     
     authorize()
     
     category_info = CategorySchema(exclude=["id"]).load(request.json)
     
-    stmt = db.select(Category).filter_by(id = id)
+    stmt = db.select(Category).filter_by(id = category_id)
     category = db.session.scalar(stmt)
     
     if category:
@@ -81,18 +81,21 @@ def update_category(id):
 
 
 # Delete a single category
-@categories_bp.route("/<int:id>", methods=["DELETE"])
+@categories_bp.route("/<int:category_id>", methods=["DELETE"])
 @jwt_required()
-def delete_category(id):
+def delete_category(category_id):
     
     authorize()
     
-    stmt = db.select(Category).filter_by(id = id)
+    stmt = db.select(Category).filter_by(id = category_id)
     category = db.session.scalar(stmt)
-    
     if category:
-        db.session.delete(category)
-        db.session.commit()
+        try:
+            db.session.delete(category)
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "This category is linked to other resources. Dependencies must be removed first."}, 409
+            
         return {"status": f"{category.name} has been deleted"}, 200
     
     return {"error": "Category not found"}, 404

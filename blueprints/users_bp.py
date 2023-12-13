@@ -27,7 +27,7 @@ def all_users():
 
 # Register a new user
 @users_bp.route("/", methods=["POST"])
-def register():
+def create_user():
     
     user_info = UserSchema(exclude=["id", "is_admin"]).load(request.json)
     
@@ -65,7 +65,7 @@ def login():
 # Get a single user
 @users_bp.route("/<int:id>")
 @jwt_required()
-def one_user(id):
+def get_user(id):
     
     stmt = db.select(User).filter_by(id = id)
     user = db.session.scalar(stmt)
@@ -118,8 +118,12 @@ def delete_user(id):
     
     if user:
         authorize(user.user_id)
-        db.session.delete(user)
-        db.session.commit()
+        try:
+            db.session.delete(user)
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "This user is linked to other resources. Dependencies must be removed first."}, 409
+        
         return {"status": f"{user.name} has been deleted"}, 200
     
     return {"error": "User not found"}, 404

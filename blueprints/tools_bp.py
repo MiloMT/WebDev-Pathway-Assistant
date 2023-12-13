@@ -44,7 +44,7 @@ def create_tool():
 
 # Get a single tool
 @tools_bp.route("/<int:id>")
-def one_tool(id):
+def get_tool(id):
     
     stmt = db.select(Tool).filter_by(id = id)
     tool = db.session.scalar(stmt)
@@ -92,8 +92,12 @@ def delete_tool(id):
     tool = db.session.scalar(stmt)
     
     if tool:
-        db.session.delete(tool)
-        db.session.commit()
+        try:
+            db.session.delete(tool)
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "This tool is linked to other resources. Dependencies must be removed first."}, 409
+        
         return {"status": f"{tool.name} has been deleted"}, 200
     
     return {"error": "Tool not found"}, 404

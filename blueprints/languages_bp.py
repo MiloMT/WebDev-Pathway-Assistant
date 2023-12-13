@@ -39,7 +39,7 @@ def create_language():
 
 # Get a single language
 @languages_bp.route("/<int:id>")
-def one_language(id):
+def get_language(id):
     
     stmt = db.select(Language).filter_by(id = id)
     language = db.session.scalar(stmt)
@@ -86,8 +86,12 @@ def delete_language(id):
     language = db.session.scalar(stmt)
     
     if language:
-        db.session.delete(language)
-        db.session.commit()
+        try:
+            db.session.delete(language)
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "This language is linked to other resources. Dependencies must be removed first."}, 409
+        
         return {"status": f"{language.name} has been deleted"}, 200
     
     return {"error": "Language not found"}, 404

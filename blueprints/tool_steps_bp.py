@@ -57,7 +57,7 @@ def create_tool_step(tool_id):
 
 # Get a single tool step
 @tool_steps_bp.route("/<int:step_no>")
-def one_tool_step(tool_id, step_no):
+def get_tool_step(tool_id, step_no):
     
     stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
@@ -77,7 +77,7 @@ def one_tool_step(tool_id, step_no):
 # Update a single tool step
 @tool_steps_bp.route("/<int:step_no>", methods=["PUT", "PATCH"])
 @jwt_required()
-def update_tool(tool_id, step_no):
+def update_tool_step(tool_id, step_no):
     
     authorize()
     
@@ -110,7 +110,7 @@ def update_tool(tool_id, step_no):
 # Delete a single tool step
 @tool_steps_bp.route("/<int:step_no>", methods=["DELETE"])
 @jwt_required()
-def delete_tool(tool_id, step_no):
+def delete_tool_step(tool_id, step_no):
     
     authorize()
     

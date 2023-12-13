@@ -51,7 +51,7 @@ def get_stack(id):
     stack = db.session.scalar(stmt)
     
     if stack:
-        return StackSchema().dump(stack)
+        return StackSchema(exclude=["stack_tools"]).dump(stack)
     
     return {"error": "Stack not found"}, 404
 

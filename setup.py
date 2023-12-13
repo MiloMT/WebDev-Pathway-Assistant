@@ -25,7 +25,3 @@ def unauthorized(err):
 @app.errorhandler(ValidationError)
 def validation_error(err):
     return {"error": err.messages}
-
-@app.errorhandler(IntegrityError)
-def validation_error(err):
-    return {"error": "The record you're trying to create already exists"}

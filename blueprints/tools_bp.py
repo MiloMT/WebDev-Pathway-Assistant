@@ -17,7 +17,7 @@ def all_tools():
     stmt = db.select(Tool).order_by("id")
     tools = db.session.scalars(stmt).all()
     
-    return ToolSchema(many=True).dump(tools)
+    return ToolSchema(many=True, exclude=["tool_steps"]).dump(tools)
 
 
 # Create a tool
@@ -50,7 +50,7 @@ def get_tool(id):
     tool = db.session.scalar(stmt)
     
     if tool:
-        return ToolSchema().dump(tool)
+        return ToolSchema(exclude=["tool_steps"]).dump(tool)
     
     return {"error": "Tool not found"}, 404
 
@@ -72,11 +72,21 @@ def update_tool(id):
         tool.description = tool_info.get("description", tool.description)
         
         try:
-            db.session.commit()
-        except exc.IntegrityError:
-            return {"error": "The tool name already exists"}, 409
+            if "category" in tool_info:
+                tool.category_id = tool_info.get("category").get("id", tool.category.id)
+            if "language" in tool_info:
+                tool.language_id = tool_info.get("language").get("id", tool.language.id)
         
-        return ToolSchema().dump(tool), 200
+            db.session.commit()
+            
+            return ToolSchema(exclude=["tool_steps", "category.id", "language.id"]).dump(tool), 200
+        except exc.IntegrityError as e:
+            if "category_id" in str(e.orig):
+                return {"error": "Category specified can't be found"}, 409
+            elif "language_id" in str(e.orig):
+                return {"error": "Language specified can't be found"}, 409
+            else:
+                return {"error": "The tool name already exists"}, 409
     
     return {"error": "Tool not found"}, 404   
 

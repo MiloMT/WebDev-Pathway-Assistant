@@ -27,10 +27,10 @@ class Tool(db.Model):
 class ToolSchema(ma.Schema):
     
     category = fields.Nested(
-        "CategorySchema", only=["name"]
+        "CategorySchema", only=["id", "name"]
         )
     language = fields.Nested(
-        "LanguageSchema", only=["name"]
+        "LanguageSchema", only=["id", "name"]
         )
     tool_steps = fields.Nested(
         "Tool_StepSchema", 

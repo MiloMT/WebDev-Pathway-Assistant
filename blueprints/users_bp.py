@@ -63,32 +63,32 @@ def login():
     
 
 # Get a single user
-@users_bp.route("/<int:id>")
+@users_bp.route("/<int:user_id>")
 @jwt_required()
-def get_user(id):
+def get_user(user_id):
     
-    stmt = db.select(User).filter_by(id = id)
+    stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
     if user:
-        authorize(user.user_id)
+        authorize(user.id)
         return UserSchema(only=["id", "email", "name"]).dump(user)
     
     return {"error": "User not found"}, 404    
     
     
 # Update a single user
-@users_bp.route("/<int:id>", methods=["PUT", "PATCH"])
+@users_bp.route("/<int:user_id>", methods=["PUT", "PATCH"])
 @jwt_required()
-def update_user(id):
+def update_user(user_id):
     
     user_info = UserSchema(exclude=["id"]).load(request.json)
     
-    stmt = db.select(User).filter_by(id = id)
+    stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
     if user:
-        authorize(id)
+        authorize(user.id)
         user.name = user_info.get("name", user.name)
         user.email = user_info.get("email", user.email)
         user.password = user_info.get("password", user.password)
@@ -109,15 +109,15 @@ def update_user(id):
 
 
 # Delete a single user
-@users_bp.route("/<int:id>", methods=["DELETE"])
+@users_bp.route("/<int:user_id>", methods=["DELETE"])
 @jwt_required()
-def delete_user(id):
+def delete_user(user_id):
     
     stmt = db.select(User).filter_by(id = id)
     user = db.session.scalar(stmt)
     
     if user:
-        authorize(user.user_id)
+        authorize(user.id)
         try:
             db.session.delete(user)
             db.session.commit()

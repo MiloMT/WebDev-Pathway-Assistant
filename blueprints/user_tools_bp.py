@@ -5,6 +5,7 @@ from models.user_tool import User_Tool, User_ToolSchema
 from models.tool import Tool
 from setup import db
 from auth import authorize
+from sqlalchemy import exc
 
 
 user_tools_bp = Blueprint("user_tools", __name__, url_prefix="/<int:user_id>/tools")
@@ -22,6 +23,7 @@ def all_user_tools(user_id):
     
     if user:
         return User_ToolSchema(many=True, only=["tool"]).dump(user.user_tools), 200
+    
     return {"error": "User not found"}, 404
 
 
@@ -32,24 +34,25 @@ def create_user_tool(user_id):
     
     authorize(user_id)
     
+    tool_id = (User_ToolSchema(exclude=["user"]).load(request.json))["tool"]["id"]
+    
     stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
     if user:
-        tool_id = (User_ToolSchema(exclude=["user"]).load(request.json))["tool"]["id"]
-
         stmt = db.select(Tool).filter_by(id = tool_id)
         tool = db.session.scalar(stmt)
 
         if tool:
-
-            user_tool = User_Tool(
-                user_id = user_id,
-                tool_id = tool_id
-            )
-            
-            db.session.add(user_tool)
-            db.session.commit()
+            try:
+                user_tool = User_Tool(
+                    user_id = user_id,
+                    tool_id = tool_id
+                )
+                db.session.add(user_tool)
+                db.session.commit()
+            except exc.IntegrityError:
+                return {"error": "The selected tool is already added"}, 409
             
             return User_ToolSchema(exclude=["user"]).dump(user_tool), 201
         

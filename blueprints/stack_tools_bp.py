@@ -5,6 +5,7 @@ from models.stack_tool import Stack_Tool, Stack_ToolSchema
 from models.tool import Tool
 from setup import db
 from auth import authorize
+from sqlalchemy import exc
 
 
 stack_tools_bp = Blueprint("stack_tools", __name__, url_prefix="/<int:stack_id>/tools")
@@ -40,13 +41,16 @@ def create_stack_tool(stack_id):
         tool = db.session.scalar(stmt)
 
         if tool:
-            stack_tool = Stack_Tool(
-                stack_id = stack_id,
-                tool_id = tool_id
-            )
-        
-            db.session.add(stack_tool)
-            db.session.commit()
+            try:
+                stack_tool = Stack_Tool(
+                    stack_id = stack_id,
+                    tool_id = tool_id
+                )
+            
+                db.session.add(stack_tool)
+                db.session.commit()
+            except exc.IntegrityError:
+                return {"error": "The selected tool is already added"}, 409
             
             return Stack_ToolSchema(exclude=["stack"]).dump(stack_tool), 201
     

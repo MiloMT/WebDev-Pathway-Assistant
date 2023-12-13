@@ -15,6 +15,7 @@ def all_tools():
     
     stmt = db.select(Tool).order_by("id")
     tools = db.session.scalars(stmt).all()
+    
     return ToolSchema(many=True).dump(tools)
 
 
@@ -26,7 +27,6 @@ def create_tool():
     authorize()
     
     tool_info = ToolSchema(exclude=["id"]).load(request.json)
-    
     tool = Tool(
         name = tool_info["name"],
         description = tool_info.get("description", "")
@@ -64,7 +64,6 @@ def update_tool(id):
     tool = db.session.scalar(stmt)
     
     if tool:
-        # authorize(tool.user_id)
         tool.name = tool_info.get("name", tool.name)
         tool.description = tool_info.get("description", tool.description)
         db.session.commit()

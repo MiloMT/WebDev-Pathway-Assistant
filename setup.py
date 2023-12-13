@@ -4,6 +4,7 @@ from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from os import environ
+from sqlalchemy.exc import IntegrityError
 from marshmallow.exceptions import ValidationError
 from flask.json import jsonify
 
@@ -24,3 +25,7 @@ def unauthorized(err):
 @app.errorhandler(ValidationError)
 def validation_error(err):
     return {"error": err.messages}
+
+@app.errorhandler(IntegrityError)
+def validation_error(err):
+    return {"error": "The record you're trying to create already exists"}

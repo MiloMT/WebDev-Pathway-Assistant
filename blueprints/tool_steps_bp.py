@@ -5,6 +5,7 @@ from models.tool_step import Tool_Step, Tool_StepSchema
 from setup import db
 from auth import authorize
 from operator import itemgetter
+from sqlalchemy import exc
 
 
 tool_steps_bp = Blueprint("tool_steps", __name__, url_prefix="/<int:tool_id>/steps")
@@ -36,15 +37,19 @@ def create_tool_step(tool_id):
     tool = db.session.scalar(stmt)
     
     if tool:
-        tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
-        tool_step = Tool_Step(
-            step_no = tool_step_info["step_no"],
-            description = tool_step_info.get("description", ""),
-            time_days = tool_step_info["time_days"],
-            tool_id = tool_id
-        )
-        db.session.add(tool_step)
-        db.session.commit()
+        try:
+            tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
+            tool_step = Tool_Step(
+                step_no = tool_step_info["step_no"],
+                description = tool_step_info.get("description", ""),
+                time_days = tool_step_info["time_days"],
+                tool_id = tool_id
+            )
+            db.session.add(tool_step)
+            db.session.commit()
+        except exc.IntegrityError:
+            return {"error": "The selected step number already exists"}, 409
+        
         return Tool_StepSchema(exclude=["tool"]).dump(tool_step), 201
     
     return {"error": "Tool not found"}, 404

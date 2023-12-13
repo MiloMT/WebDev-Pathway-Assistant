@@ -25,10 +25,7 @@ def create_language():
     authorize()
     
     language_info = LanguageSchema(exclude=["id"]).load(request.json)
-    
-    language = Language(
-        name = language_info["name"]
-    )
+    language = Language(name = language_info["name"])
     
     db.session.add(language)
     db.session.commit()

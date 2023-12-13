@@ -14,7 +14,7 @@ stacks_bp.register_blueprint(stack_tools_bp)
 @stacks_bp.route("/")
 def all_stacks():
     
-    stmt = db.select(Stack).order_by("id")
+    stmt = db.select(Stack).order_by("name")
     stacks = db.session.scalars(stmt).all()
     return StackSchema(many=True, exclude=["stack_tools"]).dump(stacks)
 
@@ -36,7 +36,7 @@ def create_stack():
     db.session.add(stack)
     db.session.commit()
     
-    return StackSchema().dump(stack), 201
+    return StackSchema(exclude=["stack_tools"]).dump(stack), 201
 
 
 # Get a single stack

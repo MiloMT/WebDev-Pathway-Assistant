@@ -55,7 +55,7 @@ def create_stack_tool(stack_id):
     return {"error": "Stack not found"}, 404
     
 
-# Delete a user tool
+# Delete a stack tool
 @stack_tools_bp.route("/<int:tool_id>", methods=["DELETE"])
 @jwt_required()
 def delete_stack_tool(stack_id, tool_id):

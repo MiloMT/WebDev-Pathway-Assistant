@@ -15,7 +15,34 @@ This API intends to remedy the above by creating a single source of truth that u
 
 ## Database Selection
 
+PostgreSQL is the DBMS that has been chosen for this particular API. To understand why this is the case, a further discussion needs to evolve around two particular points.
 
+Firstly, careful thought needs to be given as to whether a relational or non-relational database should be used which then determines which DBMS' are suitable. Some of the key metrics can be summarised below:
+
+- Querying: Although non-relational databases can be more efficient in querying for specific data structures, due to the linked nature of the API data, SQL queries give us greater flexibility in both retrieving and manipulating data across multiple tables through defined relations.
+- Scalability: Non-relational databases can scale to large data sets very efficiently due to the lack of indexing required for relational databases to function. However, within the current scope of the API, scalability does not need to be considered in this sense as the dataset will be remaining at a relative minimum and so the performance gained through this difference does not outweight the other aspects discussed.
+- API Development: Due to their structured and relational methodology, relational databases tend to require more complex development as opposed to non-relational databases to ensure that data is stored correctly and queries function as expected in line with the relations that have been created. Especially at scale, this can increase development time dramatically as the relations and table structures need to be carefully considered, especially in cases of growing complexity.
+- Data Structure: As mentioned above, the API data sets are heavily linked between records to allow for easy retrieval of related data. The table based structure in this case makes more sense to structure the API as opposed to a non-relational data structure to enforce the relationship between records.
+- Data consistency: By definition, data within a relational database is more structured and conforms to common types within defined columns as opposed to non-relational databases which aren't confined to these rules. Depending on the use case, this can form either a pro or a con, however in this case the structured nature is required for the data sets that are tracked within this API. This consistency also assists in validating and sanitising input as unexpected types will be rejected by the DBMS.
+- Data Integrity: Due to the relational nature of our datasets, relational databases give us a greater level of data integrity with the introduction of effective relations to ensure that as data is managed and maintained, our data maintains a high level of accuracy, consistency and validity which is harder to ensure with a non-relational database.
+
+Looking at the above, due to the smaller scope of this API, the relational / structured nature of the data that is going to be tracked within this API, and the benefits of using SQL queries, a relational database is a logical choice for this project.
+
+Next, further thought needs to be given as to which relational DBMS is going to be chosen. Some of the most common ones include Oracle, MySQL, PostgreSQL, as well as many others. In this case, we will compare two of the more popular relational DBMS'; PostgreSQL and MySQL.
+
+MySQL is a known for being a lightweight and stable DBMS that excels at read-only query processing, whereas PostgreSQL is one of the most fully featured open source DBMS solutions available in the current market. Some of the key metrics between these are entailed below:
+
+- Processing Speed: As mentioned above, MySQL is known for excelling at read-only queries, however PostgreSQL is generally favoured for write operations due to it's ability to ability to handle concurrent transactions. Due to the restricted scope of the datasets connected to this API however, the differences in performance would be considered negligible for our purposes.
+- Features: MySQL is a lighterweight solution than PostgreSQL, as a consequence PostgreSQL comes OOTB with more features that provide a greater level of convenience for developers using a DBMS. Even if the features aren't used at the current point in time, the presence of these is highly desirable for future development and updates of the API.
+- Platform Compatability: MySQL boasts a large amount of interoperability between platforms and can be incredibly flexible when it comes to isntallation and use for a variety of purposes, in our case though, we are using a UNIX based system for installation and running of our API so this difference is negligible.
+- Object related approach: One of the key differences is the object orientated approach of the PostgreSQL DBMS. The object oriented approach of PostgreSQL interacts favourably with our chosen framework (Flask) through the easy transmission of objects to and from the framework and the DBMS system.
+
+The key points of feature set and object related approach heavily favor PostgreSQL as the DBMS of choice for this particular application.
+
+Sources:
+
+https://aloa.co/blog/relational-vs-non-relational-database-pros-cons  
+https://www.integrate.io/blog/postgresql-vs-mysql-which-one-is-better-for-your-use-case/
 
 ## ORM
 

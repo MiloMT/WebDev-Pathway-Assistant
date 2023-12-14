@@ -954,11 +954,13 @@ This API intends to remedy the above by creating a single source of truth that u
 
 #### Summation
 
-There are three main tables that act as the backbone to this API, that is: Tool, Stack and User. Each of the other resources are designed to contribute to these three combined with two join tables that act as a link between these major tables.
+There are three main models that act as the backbone to this API, that is: Tool, Stack and User. Each of the other resources are designed to contribute to these three combined with two join tables that act as a link between these major models.
 
 #### Tool Model
 
-The tool model contains it's own information in the form of an ID for a primary key, a name and a description. This table also contains two foreign keys attached to the tables 'Categories' and 'Languages'. These foreign keys are used so that each tool can be defined in conjunction with categories and languages, which both can be related to multiple records within the tools table. So each of these follow a one to many relationship from the tools to the categories and languages. Outside of this, the tools table is used as a foreign key / conjoined primary key in the tool_steps table as one tool can have multiple steps forming a one to many relationship from tools to tool_steps. Lastly, the tools table is attached to two join tables, both user_tools and stack_tools, to provide the functionality of a many to many relationship between the three major tables through a one to many relationship to the join table from both ends. As with the tool_steps table, each of the join tables uses the tools ID within their primary key, allowing for efficient routing for correct information.
+The tool model contains it's own information in the form of an ID for a primary key, a name and a description as a tool can be only apart of one category and one language at any one time. This model also contains two foreign keys attached to the models 'Categories' and 'Languages'. These foreign keys are used so that each tool can be defined in conjunction with categories and languages, which both can be related to multiple records within the tools table. So each of these follow a one to many relationship from the tools to the categories and languages. Outside of this, the tools model is used as a foreign key / conjoined primary key in the tool_steps model as one tool can have multiple steps forming a one to many relationship from tools to tool_steps. Lastly, the tools model is attached to two join tables, both user_tools and stack_tools, to provide the functionality of a many to many relationship between the three major models through a one to many relationship to the join table from both ends. As with the tool_steps model, each of the join models uses the tools ID within their primary key, allowing for efficient routing for correct information.
+
+Due to the back_populating in the tool model, the tool schema has access to information about related categories, languages and tool_steps.
 
 ```python
 class Tool(db.Model):
@@ -987,7 +989,9 @@ class Tool(db.Model):
 
 #### Category Model
 
-The categories table is very straight forward, it contains an ID for a primary key, and a name and description. There are no foreign keys contained within the categories table, however as mentioned above, the tools table makes use of the category ID as a foreign key link between the two tables in a one to many relationship.
+The categories model is very straight forward, it contains an ID for a primary key, and a name and description. There are no foreign keys contained within the categories model, however as mentioned above, the tools model makes use of the category ID as a foreign key link between the two models in a one to many relationship.
+
+Due to the back_populating in the category model, the category could have access to related tools, however the descision was made that this relationship wouldn't logically make sense and so wasn't included.
 
 ```python
 class Category(db.Model):
@@ -1003,7 +1007,9 @@ class Category(db.Model):
 
 #### Language Model
 
-As with the categories table, the languages table is very straight forward, it contains an ID for a primary key and a name. There are no foreign keys contained within the languages table, however as mentioned above, the tools table makes use of the language ID as a foreign key link between the two tables in a one to many relationship.
+As with the categories model, the languages model is very straight forward, it contains an ID for a primary key and a name. There are no foreign keys contained within the languages model, however as mentioned above, the tools model makes use of the language ID as a foreign key link between the two models in a one to many relationship.
+
+Due to the back_populating in the language model, the language could have access to related tools, however the descision was made that this relationship wouldn't logically make sense and so wasn't included.
 
 ```python
 class Language(db.Model):
@@ -1018,7 +1024,9 @@ class Language(db.Model):
 
 #### Tool_Step Model
 
-The tool step table is the first of the tables discussed to contain a joined primary key. As the tool_steps entries acts as a sub-resource for the tools, this joined primary key makes evident this relationship. The primary key consists of two fields, the step_no which is a straight integer field, and the tool_id which is a foreign key from the tools table in a many to one relationship from tool_steps to tools. Lastly, it also contains two other fields in the description and time_days to account for other required information.
+The tool step model is the first of the models discussed to contain a joined primary key as tools can have multiple steps. As the tool_steps entries acts as a sub-resource for the tools, this joined primary key makes evident this relationship. The primary key consists of two fields, the step_no which is a straight integer field, and the tool_id which is a foreign key from the tools model in a many to one relationship from tool_steps to tools. Lastly, it also contains two other fields in the description and time_days to account for other required information.
+
+Due to the back_populating in the tool_step model, the tool_step schema has access to information about related the related tool.
 
 ```python
 class Tool_Step(db.Model):
@@ -1040,7 +1048,9 @@ class Tool_Step(db.Model):
 
 #### User Model
 
-The second of the major tables, the users table allows information about the tools to be associated with a given user. The table itself contains the ID as a primary key, and also an email field, a password, a name and is_admin to form the administrator privledges status. No foreign keys are contained within this table, however this table forms a one to many relationship with the user_tools joint able to link users to tools. This user table has it's primary key joined from the user_id and the tool_id and the routing logically uses the user_tools as a subresource for users through the 'user/user id/tools' end points.
+The second of the major models, the users model allows information about the tools to be associated with a given user. The model itself contains the ID as a primary key, and also an email field, a password, a name and is_admin to form the administrator privledges status. No foreign keys are contained within this model, however this model forms a one to many relationship with the user_tools joint able to link users to tools. This user model has it's primary key joined from the user_id and the tool_id and the routing logically uses the user_tools as a subresource for users through the 'user/user id/tools' end points.
+
+Due to the back_populating in the user model, the user schema has access to information about known tools through the join table.
 
 ```python
 class User(db.Model):
@@ -1058,7 +1068,9 @@ class User(db.Model):
 
 #### User_Tool Model
 
-As discussed above, the user_tool model is a join table to allow a relationship between the users and tools tables. Both of it's fields are foreign keys taken from the ID of each of these major tables, and these form the primary key to emphasise the relationship between the users and the tools. This table forms a many to one relationship to both the users and the tools tables.
+As discussed above, the user_tool model is a join table to allow a relationship between the users and tools models as a user can know multiple tools, and tools can be known by multiple users. Both of it's fields are foreign keys taken from the ID of each of these major models, and these form the primary key to emphasise the relationship between the users and the tools. This model forms a many to one relationship to both the users and the tools models.
+
+Due to the back_populating in the user_tool model, the user_tool schema has access to information about both the relevant user and the relevant tool.
 
 ```python
 class User_Tool(db.Model):
@@ -1079,7 +1091,9 @@ class User_Tool(db.Model):
 
 #### Stack Model
 
-The last of the major tables with a smaller amount of information. It contains an ID for the primary key, a name and a description. There are no foreign keys directly in the table however it forms a one to many relationship to the stack_tools table similar to the relationship between users and user_tools. The stack_tools is also treated as a subresource of stacks so that the tools associated to a stack can be easily obtained through the 'stacks/stack id/tools' end points.
+The last of the major models with a smaller amount of information. It contains an ID for the primary key, a name and a description. There are no foreign keys directly in the model however it forms a one to many relationship to the stack_tools model similar to the relationship between users and user_tools. The stack_tools is also treated as a subresource of stacks so that the tools associated to a stack can be easily obtained through the 'stacks/stack id/tools' end points.
+
+Due to the back_populating in the stack model, the stack schema has access to information about the relevant tools through the join table.
 
 ```python
 class Stack(db.Model):
@@ -1095,7 +1109,9 @@ class Stack(db.Model):
 
 #### Stack_Tool Model
 
-Lastly, the stack_tool model is a join table to allow a relationship between the stacks and tools tables. Both of it's fields are foreign keys taken from the ID of each of these major tables, and these form the primary key to emphasise the relationship between the stacks and the tools. This table forms a many to one relationship to both the stacks and the tools tables.
+Lastly, the stack_tool model is a join table to allow a relationship between the stacks and tools models as stacks can be made from multiple tools, and tools can be apart of multiple stacks. Both of it's fields are foreign keys taken from the ID of each of these major models, and these form the primary key to emphasise the relationship between the stacks and the tools. This model forms a many to one relationship to both the stacks and the tools models.
+
+Due to the back_populating in the stack_tool model, the stack_tool schema has access to information about both the relevant stack and the relevant tool.
 
 ```python
 class Stack_Tool(db.Model):
@@ -1116,7 +1132,27 @@ class Stack_Tool(db.Model):
 
 ## Database Relations
 
+The database is created with PostgreSQL for this particular project. In order to create the database and tables, CLI commands have been created through the CLI BP in order to create and than seed these tables. Due to the dependencies between each of the tables, the seed command seeds the database in the following order to ensure entries are created prior to the assignment of foreign keys and creation of relationships:
 
+- Categories
+- Languages
+- Stacks
+- Tools
+- Tool_Steps
+- Users
+- Stack_Tools
+- User_Tools
+
+The database creates the relationships in the following ways:
+
+- The tools table forms the most complex structure, containing a primary key, two standard fields and two foreign keys (both integer types) linking to the ID fields of the both the languages and categories tables. The ID is a sequential index that is automatically incremented and applied as new tools are added. New tools form new records within this table, bearing in mind that in order to create a new tool, the relevant category and language needs to be created in their respective tables prior to ensure the foreign keys are valid.
+- The categories table is a simple table that contains just an ID, a name and a description. The ID forms the primary key and is a sequential index incremented and applied as new categories are added.
+- The languages table is a simple table that contains just an ID and a name. The ID forms the primary key and is a sequential index incremented and applied as new languages are added.
+- The tool_steps table contains a primary key joined from two fields, the 'step_no' which is a custom integer field and a foreign key which contains a tool_id reference from the tools table. The table also contains fields for both a description and time_days and seperate fields. The joined primary key has been chosing here to emphasise the relationship between the main resource (the tools table) and the subresource (the tool_steps table) and the dependency that exists between them. Each tool can have many steps, but a single tool can't have duplicate steps in the form of a step_no integer, and this primary key enforces that automatically.
+- The user table forms a fairly simple structure with an ID for the primary key which is a sequential index incremented and applied as new users are added. There are also fields for an email, a password, a name and an is_admin field used for admin privledge authorization. There are no foreign keys contained directly within the user table, however it acts as the main resource for the user_tools described below.
+- The user_tools table forms a join table to cement the relationship between the users table and the tools table. It's primary key is a joined key made from two foreign key fields, both the user_id and the tool_id. These two fields are the only fields existing in this table, and their sole purpose is to link user records to tool records from these two tables. Neither of these fields are sequential index's as the foreign key relies on existing entries within the other tables, and this format for the primary key enforces that logic. The user_tools table acts as a subresource of the users table to follow a logical approach of looking through the route of the user first to access the tools that are listed under a given user. 
+- The stacks table is the last main resource however contains fairly limited information. An ID forms the primary key which is a sequential index incremented and applied as new stacks are added. Outside of that, the other fields area name and a description field. Similar in structure to users, this table forms a main resource / sub-resource relation to the stack_tools table so that tools related to a stack can be checked under the stack table routes.
+- The stacks_tools table forms a join table to cement the relationship between the stacks table and the tools table. It's primary key is a joined key made from two foreign key fields, both the stack_id and the tool_id. These two fields are the only fields existing in this table, and their sole purpose is to link stacks to tool records from these two tables. Neither of these fields are sequential index's as the foreign key relies on existing entries within the other tables, and this format for the primary key enforces that logic. The stack_tools table acts as a subresource of the stacks table to follow a logical approach of looking through the route of the stack first to access the tools that are listed under a given stack. 
 
 ## Project Management
 

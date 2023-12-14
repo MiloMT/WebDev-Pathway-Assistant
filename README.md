@@ -948,7 +948,33 @@ This API intends to remedy the above by creating a single source of truth that u
 
 ## Third Party Services
 
+#### PostgreSQL
 
+PostgreSQL is the chosen database management system for this API. For the reasoning behind this, please refer to the database selection heading up above. This is used for all our database operations and for storage of all data related to the models created within SQL alchemy.
+
+#### Flask
+
+Flask is the back-end framework chosen to use for this particular API. Flask as a web framework provides the project with tools, libraries and features to form the backbone of the API. It itself doesn't include an ORM, however this library uses features such as URL routing and the handling of HTTP requests, templating (although not used here) and it's a very explicit and readable library for ease of use and maintenance.
+
+#### SQL Alchemy
+
+SQL alchemy is a python SQL ORM that allows flask to connect to and communicate with our PostgreSQL database (in conjunction with Psycopg2) using an object oriented approach. This allows myself using Python in this project to work with pythonic objects, rather than the need to convert them to other formats or types prior to sending or retrieving from the DBMS, and it allows us to generate SQL queries using inbuilt functionality. It can handle this through the models that have been defined and the relations that have been created within these models.
+
+#### Marshmallow
+
+Marshmallow is a python library used to convert complex datatypes such as JSON within the API requests to and from native Python datatypes for use with SQL Alchemy and Flask through the user of serializing and deserializing data and objects. Outside of the use of schemas for this conversion, other inbuilt functions such as data validation, allows us to easily check over and validate input data as it's retrieved or sent by the API.
+
+#### Psycopg2
+
+Psycopg2 is a python library that acts as a database adapter specifically for PostgeSQL. After SQL alchemy forms the queries necessary for the DBMS, psycopg2 allows for the connection to be established between flask and the DBMS to execute the queries and retrieve the requested data.
+
+#### Bcrypt
+
+Bcrypy is a password hashing library used to secure the passwords that are received by the API and subsequently used to check received passwords against the hashed passwords stored within the database. This ensures that sensitive passwords are stored safely and are less susceptible to cyber attacks.
+
+#### Flask-JWT-Extended
+
+Flask JWT extended is a package specifically designed for user authentication through the construction and validation of JWT tokens, an industry standard for bearer tokens. The API heavily uses this functionality to authorize restricted end routes depending on the user access privledges through the creation of a token under the user/login route, and than subsequently using the JWT token for secured routes using the jwt identity functionality.
 
 ## Model Relationships
 

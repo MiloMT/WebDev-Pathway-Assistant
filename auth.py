@@ -5,10 +5,11 @@ from setup import db
 
 
 def authorize(user_id=None):
-    """Checks whether is_admin is True, otherwise aborts request.
+    """Checks whether is_admin is True or passed identity matches required
+    identity, otherwise aborts request.
 
     Returns:
-        function: Abort function to raise error
+        function: Abort function to raise error if not authorized
     """
     jwt_user_id = get_jwt_identity()
     stmt = db.select(User).where(User.id == jwt_user_id)

@@ -145,28 +145,6 @@ def db_seed():
     
     db.session.add_all(users)
     db.session.commit()
-    
-    # Plans
-    # user_plans = [
-    #     User_Plan(
-    #         name = "Plan 1",
-    #         end_date = f"{date.today()}",
-    #         user_id = users[0].id
-    #     ),
-    #     User_Plan(
-    #         name = "Plan 2",
-    #         end_date = f"{date.today()}",
-    #         user_id = users[1].id
-    #     ),
-    #     User_Plan(
-    #         name = "Plan 3",
-    #         end_date = f"{date.today()}",
-    #         user_id = users[0].id
-    #     ),
-    # ]
-    
-    # db.session.add_all(user_plans)
-    # db.session.commit()
 
     # Stack Tools
     stack_tools = [

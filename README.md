@@ -478,27 +478,46 @@ This API intends to remedy the above by creating a single source of truth that u
 ```
 
 - HTTP Request Verb: ```POST```
-- Required Data: name (string(50)), description (text), category_id (int, foreign key), language_id (int, foreign key)
+- Required Data: name (string(50)), description (text), category.id (int, foreign key, in a nested dictionary), language.id (int, foreign key, in a nested dictionary)
 - Expected Response: A '201 CREATED' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required.
-- Description:
+- Description: Allows an admin to create a new tool in the tools table and returns a JSON with the ID, name and description of the created tool along with the relevant category and language names.
 
 > Example Request
 
 ```
-
+{
+	"name": "Created Tool",
+	"description": "Created Tool description",
+	"category": {
+		"id": "1"
+	},
+	"language": {
+		"id": "1"
+	}
+}
 ```
 
 > Example Response
 
 ```
-
+{
+	"category": {
+		"name": "Framework"
+	},
+	"description": "Created Tool description",
+	"id": 4,
+	"language": {
+		"name": "Python"
+	},
+	"name": "Created Tool"
+}
 ```
 
 #### /tools/\<id>  
 
 - HTTP Request Verb: ```GET```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: null
 - Description: Provides a JSON containing the name, ID and description of a single tool as well as their relevant category name and language name.
@@ -523,13 +542,13 @@ This API intends to remedy the above by creating a single source of truth that u
 - Required Data: name (string(50)), description (text), category.id (int, foreign key, in a nested dictionary), language.id (int, foreign key, in a nested dictionary) *missing fields will default to current data*
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required.
-- Description:
+- Description: Allows an admin to make adjustments to fields from an existing tool and returns a JSON of the updated name, ID and description of the affected stack along with the relevant category and language name.
 
 > Example Request
 
 ```
 {
-	"name":"Changed tool",
+	"name": "Changed Tool Name",
 	"description": "Changed tool description",
 	"category": {
 		"id": "2"
@@ -543,25 +562,37 @@ This API intends to remedy the above by creating a single source of truth that u
 > Example Response
 
 ```
-
+{
+	"category": {
+		"name": "Tool"
+	},
+	"description": "Changed tool description",
+	"id": 1,
+	"language": {
+		"name": "Javascript"
+	},
+	"name": "Changed Tool Name"
+}
 ```
 
 - HTTP Request Verb: ```DELETE```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required.
-- Description:
+- Description: Allows an admin to delete a single tool, and returns a JSON confirming the name of the tool that has been deleted.
 
 > Example Response
 
 ```
-
+{
+	"status": "Created Tool has been deleted"
+}
 ```
 
 #### /tools/\<id>/steps  
 
 - HTTP Request Verb: ```GET```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: null
 - Description: Provides a JSON containing the description, step number and learning length in days of the tool steps from a single tool.
@@ -589,27 +620,35 @@ This API intends to remedy the above by creating a single source of truth that u
 ```
 
 - HTTP Request Verb: ```POST```
-- Required Data: step_no (int), description (text), time_days (int), tool_id (int, foreign key)
+- Required Data: step_no (int), description (text), time_days (int)
 - Expected Response: A '201 CREATED' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required.
-- Description:
+- Description: Allows an admin to create a new tool step in the tool steps table and returns a JSON with the containing the description, step number and learning length in days of the created tool step.
 
 > Example Request
 
 ```
-
+{
+	"step_no": "10",
+	"description": "Created Tool Step",
+	"time_days": "5"
+}
 ```
 
 > Example Response
 
 ```
-
+{
+	"description": "Created Tool Step",
+	"step_no": 10,
+	"time_days": 5
+}
 ```
 
 #### /tools/\<id>/steps/\<id>  
 
 - HTTP Request Verb: ```GET```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: null
 - Description: Provides a JSON containing the description, step number and learning length in days of a single tool step.
@@ -625,42 +664,52 @@ This API intends to remedy the above by creating a single source of truth that u
 ```
 
 - HTTP Request Verb: ```PUT``` ```PATCH```
-- Required Data: *missing fields will default to current data*
+- Required Data: step_no (int), description (text), time_days (int) *missing fields will default to current data*
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required.
-- Description:
+- Description: Allows an admin to make adjustments to fields from an existing tool step and returns a JSON of the updated description, step number and learning length in days of the created tool step.
 
 > Example Request
 
 ```
-
+{
+	"step_no": "20",
+	"description": "adjusted step",
+	"time_days": "10"
+}
 ```
 
 > Example Response
 
 ```
-
+{
+	"description": "adjusted step",
+	"step_no": 20,
+	"time_days": 10
+}
 ```
 
 - HTTP Request Verb: ```DELETE```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required.
-- Description:
+- Description: Allows an admin to delete a single tool step, and returns a JSON confirming the step number of the tool step that has been deleted.
 
 > Example Response
 
 ```
-
+{
+	"status": "Tool Step 10 has been deleted"
+}
 ```
 
 ### /users  
 
 - HTTP Request Verb: ```GET```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
-- Authentication: null
-- Description: Provides a JSON containing the names, IDs, emails and admin status of all users within the table.
+- Authentication: Valid JWT Token from an administrator user required.
+- Description: Allows an admin to request a JSON containing the names, IDs, emails and admin status of all users within the table.
 
 > Example Response
 
@@ -677,58 +726,70 @@ This API intends to remedy the above by creating a single source of truth that u
 		"id": 2,
 		"is_admin": false,
 		"name": "Test User"
-	},
-	{
-		"email": "test12345@test.com",
-		"id": 3,
-		"is_admin": true,
-		"name": "changed user"
 	}
 ]
 ```
 
 - HTTP Request Verb: ```POST```
-- Required Data: email (text), password (text), name (text), is_admin (boolean, either "True" or "False", requires admin privledges)
+- Required Data: email (text), password (text), name (text)
 - Expected Response: A '201 CREATED' response with a JSON.
 - Authentication: null
-- Description:
+- Description: Allows any user to create a new user in the users table and returns a JSON with the ID, name and email of the created user.
 
 > Example Request
 
 ```
-
+{
+	"name":"Created User",
+	"email": "user@test.com",
+	"password": "password123"
+}
 ```
 
 > Example Response
 
 ```
-
+{
+	"email": "user@test.com",
+	"id": 3,
+	"name": "Created User"
+}
 ```
 
 #### /users/login  
 
 - HTTP Request Verb: ```POST```
-- Required Data:
+- Required Data: email (text), password (text)
 - Expected Response: A '201 CREATED' response with a JSON.
 - Authentication: null
-- Description:
+- Description: Allows a user to login using their email and password and retrieve a JSON containing a valid JWT token for authentication as well as the users email, ID and name as confirmation.
 
 > Example Request
 
 ```
-
+{
+	"email": "test@test.com",
+	"password": "password"
+}
 ```
 
 > Example Response
 
 ```
-
+{
+	"token": <example JWT token>,
+	"user": {
+		"email": "test@test.com",
+		"id": 2,
+		"name": "Test User"
+	}
+}
 ```
 
 #### /users/\<id>  
 
 - HTTP Request Verb: ```GET```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
 - Description: Provides a JSON containing the name, ID and email of a single user.
@@ -744,39 +805,71 @@ This API intends to remedy the above by creating a single source of truth that u
 ```
 
 - HTTP Request Verb: ```PUT``` ```PATCH```
-- Required Data: *missing fields will default to current data*
+- Required Data: email (text), password (text), name (text), is_admin (boolean, requires admin privledges to set, requires either a "True" or "False" string) *missing fields will default to current data*
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user. Admin rights required to update administrator status.
-- Description:
+- Description: Allows a user to update their details, and if they have administrator privledges, can adjust the is_admin property of users. Returns a JSON of the updated status including email, ID, and name. If the is_admin property was adjusted, will include it in the returned JSON.
 
-> Example Request
-
-```
+> Example Request (non-admin)
 
 ```
-
-> Example Response
-
+{
+	"name":"changed user",
+	"email": "test12345@test.com",
+	"password": "changedpassword"
+}
 ```
 
+> Example Response (non-admin)
+
+```
+{
+	"email": "test12345@test.com",
+	"id": 3,
+	"name": "changed user"
+}
+```
+
+> Example Request (admin)
+
+```
+{
+	"name":"changed user",
+	"email": "test12345@test.com",
+	"password": "changedpassword",
+	"is_admin": "true"
+}
+```
+
+> Example Response (admin)
+
+```
+{
+	"email": "test12345@test.com",
+	"id": 3,
+	"is_admin": true,
+	"name": "changed user"
+}
 ```
 
 - HTTP Request Verb: ```DELETE```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
-- Description:
+- Description: Allows an admin to delete a user from the users table or the relevant user to delete their user from the users table, and returns a JSON confirming the name of the user that has been deleted.
 
 > Example Response
 
 ```
-
+{
+	"status": "changed user has been deleted"
+}
 ```
 
 #### /users/\<id>/tools  
 
 - HTTP Request Verb: ```GET```
-- Required Data:
+- Required Data: null
 - Expected Response: A '200 OK' response with a JSON.
 - Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
 - Description: Provides a JSON containing the name and ID of all tools related to a single user.
@@ -804,6 +897,49 @@ This API intends to remedy the above by creating a single source of truth that u
 		}
 	}
 ]
+```
+
+- HTTP Request Verb: ```POST```
+- Required Data: tool.id (int, foreign key, in a nested dictionary)
+- Expected Response: A '201 CREATED' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
+- Description: Allows an admin to add a tool to a users account or the relevant user to add a tool to their own account, returns a JSON with the added tool's ID and name.
+
+> Example Request
+
+```
+{
+	"tool": {
+		"id": 3
+	}
+}
+```
+
+> Example Response
+
+```
+{
+	"tool": {
+		"id": 3,
+		"name": "Tool 3"
+	}
+}
+```
+
+#### /users/\<id>/tools/\<id>
+
+- HTTP Request Verb: ```DELETE```
+- Required Data: null
+- Expected Response: A '200 OK' response with a JSON.
+- Authentication: Valid JWT Token from an administrator user required or a valid JWT token from the relevant user.
+- Description: Allows an admin to remove a tool from a user or the relevant user to remove a tool from their user, and returns a JSON confirming the name of the tool that has been removed.
+
+> Example Response
+
+```
+{
+	"status": "Tool 1 has been removed"
+}
 ```
 
 ## ERD

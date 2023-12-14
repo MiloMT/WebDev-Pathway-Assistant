@@ -30,16 +30,23 @@ def create_tool():
     tool_info = ToolSchema(exclude=["id"]).load(request.json)
     tool = Tool(
         name = tool_info["name"],
-        description = tool_info.get("description", "")
+        description = tool_info.get("description", ""),
+        category_id = tool_info.get("category").get("id"),
+        language_id = tool_info.get("language").get("id")
     )
     
     try:
         db.session.add(tool)
         db.session.commit()
-    except exc.IntegrityError:
+    except exc.IntegrityError as e:
+        if "category_id" in str(e.orig):
+            return {"error": "Category specified can't be found"}, 409
+        elif "language_id" in str(e.orig):
+            return {"error": "Language specified can't be found"}, 409
+        else:
             return {"error": "The tool name already exists"}, 409
     
-    return ToolSchema().dump(tool), 201
+    return ToolSchema(exclude=["tool_steps", "category.id", "language.id"]).dump(tool), 201
 
 
 # Get a single tool
@@ -50,7 +57,7 @@ def get_tool(id):
     tool = db.session.scalar(stmt)
     
     if tool:
-        return ToolSchema(exclude=["tool_steps"]).dump(tool)
+        return ToolSchema(exclude=["tool_steps", "category.id", "language.id"]).dump(tool)
     
     return {"error": "Tool not found"}, 404
 

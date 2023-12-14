@@ -43,7 +43,7 @@ def create_user():
     except exc.IntegrityError:
         return {"error": "Email address already in use"}, 409 
     
-    return UserSchema(only=["email", "name"]).dump(user), 201
+    return UserSchema(only=["id", "email", "name"]).dump(user), 201
     
 
 
@@ -91,8 +91,8 @@ def update_user(user_id):
         authorize(user.id)
         user.name = user_info.get("name", user.name)
         user.email = user_info.get("email", user.email)
-        user.password = user_info.get("password", user.password)
-        if user_info["is_admin"]:
+        user.password = bcrypt.generate_password_hash(user_info.get("password", user.password)).decode("utf8")
+        if "is_admin" in user_info:
             authorize()
             if user_info["is_admin"].lower() == "true":
                 user.is_admin = True
@@ -103,7 +103,10 @@ def update_user(user_id):
         except exc.IntegrityError:
             return {"error": "Email address already in use"}, 409 
         
-        return UserSchema().dump(user), 200
+        if "is_admin" in user_info:
+            return UserSchema(exclude=["user_tools", "password"]).dump(user), 200
+        else:
+            return UserSchema(exclude=["user_tools", "password", "is_admin"]).dump(user), 200
     
     return {"error": "User not found"}, 404   
 
@@ -113,7 +116,7 @@ def update_user(user_id):
 @jwt_required()
 def delete_user(user_id):
     
-    stmt = db.select(User).filter_by(id = id)
+    stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
     if user:

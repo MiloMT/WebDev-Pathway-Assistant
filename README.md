@@ -1156,3 +1156,30 @@ The database creates the relationships in the following ways:
 
 ## Project Management
 
+The way this project was managed was through 3 main avenues, Github projects, standups and github commits. 
+
+Github projects formed the base of my project organisation. Each stage was broken up into multiple categories, and than each category was broken up into multiple issues. This allowed me to structure my approach from the get go, and align my project objectives in a structured yet flexible approach. Each task was given a priority to assist in shaping which tasks to tackle first and prioritise my workload appropriately, and a due date to track my project against the overall timeline as well as highlight dependencies within the API, such as models needing to be created before blueprints. Each individual issue was also assigned to a different stage between 'To Do', 'In Progress' and 'Done' that I actively adjusted to suit the appropriate stage of each issue at any given time. New issues were added as required and I could adjust or remove old issues if they were no longer relevant or were needed for project objectives.
+
+Daily standups formed another major part of the project through the coder academy discord channel. Each standup provided the opportunity to provide updated status on how the project delivery was running and whether there were any potential roadblocks throughout the process. This allowed the educators to oversee progress and allowed the opportunity to leverage outside knowledge to efficiently handle roadblocks rather than slow progress through these problems. Although it wouldn't form a part of a professional setting, the comparison of other student standups also allows for reflection on your own progress, and potential ideas on how to approach key problems and issues.
+
+Lastly, github commits form the trackable basis for progress over the length of the assessment. Descriptive naming was given to each of these commits, so that if required rollbacks can be utilised accurately and efficiently, and progress can be tracked across the length of the project and against the Github project.
+
+These three combined create a comprehensive overview of both the initial project planning stage and project delivery throughout the assessment time frame.
+
+> Github Project Screenshot
+
+![Github Project Table](./docs/231211_ProjectRoadmap.png)
+![Github Project List](./docs/231211_ProjectList.png)
+
+> Standup Example
+
+```
+1. Finished the majority of CRUD operations, figured out join tables and how to add records to join tables with conjoined primary keys.
+2. Was figuring out the join table logic and join table requests, but figured out that I needed nested json statements for it.
+3. Finalise all my models and try to finish as much of my blueprints as possible.
+4. How to pass and parse nested jsons
+```
+
+> Github Commit History Screenshot
+
+![github com_MiloMT_WebDev-Pathway-Assistant_commits_main_](https://github.com/MiloMT/WebDev-Pathway-Assistant/assets/60989510/e91b6c73-ae99-476a-aeb2-263d7d484fd3)

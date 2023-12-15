@@ -46,7 +46,20 @@ https://www.integrate.io/blog/postgresql-vs-mysql-which-one-is-better-for-your-u
 
 ## ORM
 
+Flask is the framework that has been chosen for this particular API. In order to interact with the DBMS system, an ORM is required to convert the data between Python / Flask and PostgreSQL. For our purposes, Flask SQL Alchemy has been chosen to act as our ORM. The key functionalities that an ORM utilises include:
 
+- Data conversion: As mentioned above, the ability to convert the data to a usable format between both Flask and PostgreSQL. SQL Alchemy takes care of the mapping required to ensure that each tool receives the data in the format that it needs to use and manipulation.
+- Query construction and handling: SQL Alchemy gives the developer greater efficiency and flexibility by creating complex queries from simplified syntax. The developer can write the simplified syntax, which alchemy will than convert to an appropriate query and then execute them to PostgreSQL.
+- Relation Management: Within the model defintions, SQL Alchemy gives us the ability to construct relationships between the different models / tables. This allows for easy manipulation and retrieval between related tables, and a higher level of data integrity across the database.
+- Security: SQL Alchemy also provides a further layer between the framework and database through validation and sanitisation of data, reducing the potential for malicious queries and injections.
+
+These key functionalities provide us with the below benefits:
+
+- Development Efficiency: SQL Alchemy reduces the amount of code and development time required to construct the interaction layer between the framework and DBMS. It provides us with tools and functionality that otherwise would increase development time and complexity during the project timeline. Such as the construction of queries and data conversion.
+- Simplicity: The outsourcing of conversion and construction gives our API a reduced level of complexity, improving the readability of our code, and as a consequence, makes maintenance and further development easier. It also allows us to develop in a language consistent with our framework, further reducing complexity in the project environment.
+- Platform Agnostic: An ORM allows the user to develop in a language native to their framework regardless of the DBMS being used (depending on the ORM chosen). In our case, we are utilising SQL alchemy to form the connection between Flask and PostgreSQL, however SQL alchemy has the ability to work with other DBMS systems, allowing for a transition of knowledge across a variety of purposes and setups.
+- Data Integrity: As discussed above, the relation management functionality of the ORM helps enforce relations between tables in our database. This enforces consistency and accuracy as data is manipulated and maintained between the framework and DBMS.
+- Security: The validation and sanitisation of data that comes with the ORM means that user and client data security can be achieved at a higher standard with greater efficiency than would otherwise be possible, giving confidence to developers, users and stakeholders alike.
 
 ## End Points
 

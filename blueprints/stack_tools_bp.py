@@ -14,6 +14,9 @@ stack_tools_bp = Blueprint("stack_tools", __name__, url_prefix="/<int:stack_id>/
 @stack_tools_bp.route("/")
 def all_stack_tools(stack_id):
     
+    # Query to obtain a JSON of the specific stack.
+    # Due to established relations, the tool details can be read
+    # from the stack
     stmt = db.select(Stack).filter_by(id = stack_id)
     stack = db.session.scalar(stmt)
     
@@ -31,12 +34,16 @@ def create_stack_tool(stack_id):
     
     authorize()
     
+    # Query to obtain a JSON of the specific stack
+    # with the ID taken from the route
     stmt = db.select(Stack).filter_by(id = stack_id)
     stack = db.session.scalar(stmt)
     
     if stack:
         tool_id = (Stack_ToolSchema(exclude=["stack"]).load(request.json, partial=True))["tool"]["id"]
 
+        # Query to obtain a JSON of the specific tool
+        # with the ID taken from the JSON request
         stmt = db.select(Tool).filter_by(id = tool_id)
         tool = db.session.scalar(stmt)
 
@@ -65,10 +72,15 @@ def delete_stack_tool(stack_id, tool_id):
     
     authorize()
     
+    # Query to obtain a JSON of the specific stack
+    # with the ID taken from the route
     stmt = db.select(Stack).filter_by(id = stack_id)
     stack = db.session.scalar(stmt)
     
     if stack:
+        # Query to obtain a JSON of the specific stack_tool
+        # where the IDs of both the stack and tool match the ID's
+        # provided by the route.
         stmt = db.select(Stack_Tool).filter_by(tool_id = tool_id, stack_id = stack_id)
         stack_tool = db.session.scalar(stmt)
         

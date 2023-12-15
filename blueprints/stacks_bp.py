@@ -15,6 +15,7 @@ stacks_bp.register_blueprint(stack_tools_bp)
 @stacks_bp.route("/")
 def all_stacks():
 
+    # Query to obtain a JSON of stacks ordered by their name
     stmt = db.select(Stack).order_by("name")
     stacks = db.session.scalars(stmt).all()
     return StackSchema(many=True, exclude=["stack_tools"]).dump(stacks)
@@ -47,6 +48,8 @@ def create_stack():
 @stacks_bp.route("/<int:id>")
 def get_stack(id):
     
+    # Query to obtain a JSON of the specific stack
+    # with the ID taken from the route
     stmt = db.select(Stack).filter_by(id = id)
     stack = db.session.scalar(stmt)
     
@@ -65,6 +68,8 @@ def update_stack(id):
     
     stack_info = StackSchema(exclude=["id"]).load(request.json)
     
+    # Query to obtain a JSON of the specific stack
+    # with the ID taken from the route
     stmt = db.select(Stack).filter_by(id = id)
     stack = db.session.scalar(stmt)
     
@@ -89,6 +94,8 @@ def delete_stack(id):
     
     authorize()
     
+    # Query to obtain a JSON of the specific stack
+    # with the ID taken from the route
     stmt = db.select(Stack).filter_by(id = id)
     stack = db.session.scalar(stmt)
     

@@ -18,6 +18,9 @@ def all_user_tools(user_id):
     
     authorize(user_id)
     
+    # Query to obtain a JSON of the specific user.
+    # Due to established relations, the tool details can be read
+    # from the user
     stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
@@ -36,10 +39,14 @@ def create_user_tool(user_id):
     
     tool_id = (User_ToolSchema(exclude=["user"]).load(request.json, partial=True))["tool"]["id"]
     
+    # Query to obtain a JSON of the specific user
+    # with the ID taken from the route
     stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
     if user:
+        # Query to obtain a JSON of the specific tool
+        # with the ID taken from the JSON request
         stmt = db.select(Tool).filter_by(id = tool_id)
         tool = db.session.scalar(stmt)
 
@@ -67,10 +74,15 @@ def delete_user_tool(user_id, tool_id):
     
     authorize(user_id)
     
+    # Query to obtain a JSON of the specific user
+    # with the ID taken from the route
     stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
     if user:
+        # Query to obtain a JSON of the specific user_tool
+        # where the IDs of both the user and tool match the ID's
+        # provided by the route.
         stmt = db.select(User_Tool).filter_by(tool_id = tool_id, user_id = user_id)
         user_tool = db.session.scalar(stmt)
         

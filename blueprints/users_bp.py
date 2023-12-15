@@ -20,6 +20,7 @@ def all_users():
     
     authorize()
     
+    # Query to obtain a JSON of users
     stmt = db.select(User)
     users = db.session.scalars(stmt).all()
     return UserSchema(many=True, exclude=["password", "user_tools"]).dump(users)
@@ -52,6 +53,8 @@ def create_user():
 def login():
     user_info = UserSchema(exclude=["id"]).load(request.json, partial=True)
     
+    # Query to obtain a JSON of the specific user
+    # with the email taken from the JSON request
     stmt = db.select(User).where(User.email == user_info["email"])
     user = db.session.scalar(stmt)
     
@@ -67,6 +70,8 @@ def login():
 @jwt_required()
 def get_user(user_id):
     
+    # Query to obtain a JSON of the specific user
+    # with the ID taken from the route
     stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
@@ -84,6 +89,8 @@ def update_user(user_id):
     
     user_info = UserSchema(exclude=["id"]).load(request.json)
     
+    # Query to obtain a JSON of the specific user
+    # with the ID taken from the route
     stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     
@@ -113,6 +120,8 @@ def update_user(user_id):
 @jwt_required()
 def delete_user(user_id):
     
+    # Query to obtain a JSON of the specific user
+    # with the ID taken from the route
     stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)
     

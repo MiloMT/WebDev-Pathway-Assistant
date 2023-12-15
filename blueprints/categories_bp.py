@@ -13,6 +13,7 @@ categories_bp = Blueprint("categories", __name__, url_prefix="/categories")
 @categories_bp.route("/")
 def all_categories():
     
+    # Query to obtain a JSON of categories ordered by their ID
     stmt = db.select(Category).order_by("id")
     categories = db.session.scalars(stmt).all()
     return CategorySchema(many=True).dump(categories)
@@ -45,6 +46,8 @@ def create_category():
 @categories_bp.route("/<int:category_id>")
 def get_category(category_id):
     
+    # Query to obtain a JSON of the specific category 
+    # with the ID taken from the route
     stmt = db.select(Category).filter_by(id = category_id)
     category = db.session.scalar(stmt)
     
@@ -63,6 +66,8 @@ def update_category(category_id):
     
     category_info = CategorySchema(exclude=["id"]).load(request.json)
     
+    # Query to obtain a JSON of the specific category 
+    # with the ID taken from the route
     stmt = db.select(Category).filter_by(id = category_id)
     category = db.session.scalar(stmt)
     
@@ -87,6 +92,8 @@ def delete_category(category_id):
     
     authorize()
     
+    # Query to obtain a JSON of the specific category 
+    # with the ID taken from the route
     stmt = db.select(Category).filter_by(id = category_id)
     category = db.session.scalar(stmt)
     if category:

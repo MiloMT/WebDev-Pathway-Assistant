@@ -15,6 +15,9 @@ tool_steps_bp = Blueprint("tool_steps", __name__, url_prefix="/<int:tool_id>/ste
 @tool_steps_bp.route("/")
 def all_tool_steps(tool_id):
     
+    # Query to obtain a JSON of the specific tool.
+    # Due to established relations, the tool_step details can be read
+    # from the tool
     stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
     
@@ -33,6 +36,8 @@ def create_tool_step(tool_id):
     
     authorize()
     
+    # Query to obtain a JSON of the specific tool
+    # with the ID taken from the route
     stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
     
@@ -59,10 +64,15 @@ def create_tool_step(tool_id):
 @tool_steps_bp.route("/<int:step_no>")
 def get_tool_step(tool_id, step_no):
     
+    # Query to obtain a JSON of the specific tool
+    # with the ID taken from the route
     stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
     
     if tool:
+        # Query to obtain a JSON of the specific tool_step
+        # where the ID of the tool and the step_no match the one's
+        # provided by the route.
         stmt = db.select(Tool_Step).filter_by(tool_id = tool_id, step_no = step_no)
         tool_step = db.session.scalar(stmt)
         
@@ -83,10 +93,15 @@ def update_tool_step(tool_id, step_no):
     
     tool_step_info = Tool_StepSchema(exclude=["tool"]).load(request.json)
     
+    # Query to obtain a JSON of the specific tool
+    # with the ID taken from the route
     stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
     
     if tool:
+        # Query to obtain a JSON of the specific tool_step
+        # where the ID of the tool and the step_no match the one's
+        # provided by the route.
         stmt = db.select(Tool_Step).filter_by(tool_id = tool_id, step_no = step_no)
         tool_step = db.session.scalar(stmt)
         
@@ -114,10 +129,15 @@ def delete_tool_step(tool_id, step_no):
     
     authorize()
     
+    # Query to obtain a JSON of the specific tool
+    # with the ID taken from the route
     stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
     
     if tool:
+        # Query to obtain a JSON of the specific tool_step
+        # where the ID of the tool and the step_no match the one's
+        # provided by the route.
         stmt = db.select(Tool_Step).filter_by(tool_id = tool_id, step_no = step_no)
         tool_step = db.session.scalar(stmt)
         

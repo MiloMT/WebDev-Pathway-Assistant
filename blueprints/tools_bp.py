@@ -14,6 +14,7 @@ tools_bp.register_blueprint(tool_steps_bp)
 @tools_bp.route("/")
 def all_tools():
     
+    # Query to obtain a JSON of tools ordered by their ID
     stmt = db.select(Tool).order_by("id")
     tools = db.session.scalars(stmt).all()
     
@@ -55,10 +56,12 @@ def create_tool():
 
 
 # Get a single tool
-@tools_bp.route("/<int:id>")
-def get_tool(id):
+@tools_bp.route("/<int:tool_id>")
+def get_tool(tool_id):
     
-    stmt = db.select(Tool).filter_by(id = id)
+    # Query to obtain a JSON of the specific tool
+    # with the ID taken from the route
+    stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
     
     if tool:
@@ -68,15 +71,17 @@ def get_tool(id):
 
 
 # Update a single tool
-@tools_bp.route("/<int:id>", methods=["PUT", "PATCH"])
+@tools_bp.route("/<int:tool_id>", methods=["PUT", "PATCH"])
 @jwt_required()
-def update_tool(id):
+def update_tool(tool_id):
     
     authorize()
     
     tool_info = ToolSchema(exclude=["id"]).load(request.json, partial=True)
     
-    stmt = db.select(Tool).filter_by(id = id)
+    # Query to obtain a JSON of the specific tool
+    # with the ID taken from the route
+    stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
     
     if tool:
@@ -104,13 +109,15 @@ def update_tool(id):
 
 
 # Delete a single tool
-@tools_bp.route("/<int:id>", methods=["DELETE"])
+@tools_bp.route("/<int:tool_id>", methods=["DELETE"])
 @jwt_required()
-def delete_tool(id):
+def delete_tool(tool_id):
     
     authorize()
     
-    stmt = db.select(Tool).filter_by(id = id)
+    # Query to obtain a JSON of the specific tool
+    # with the ID taken from the route
+    stmt = db.select(Tool).filter_by(id = tool_id)
     tool = db.session.scalar(stmt)
     
     if tool:

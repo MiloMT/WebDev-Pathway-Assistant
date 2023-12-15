@@ -13,6 +13,7 @@ languages_bp = Blueprint("languages", __name__, url_prefix="/languages")
 @languages_bp.route("/")
 def all_languages():
     
+    # Query to obtain a JSON of languages ordered by their ID
     stmt = db.select(Language).order_by("id")
     languages = db.session.scalars(stmt).all()
     return LanguageSchema(many=True).dump(languages)
@@ -38,10 +39,12 @@ def create_language():
 
 
 # Get a single language
-@languages_bp.route("/<int:id>")
-def get_language(id):
+@languages_bp.route("/<int:language_id>")
+def get_language(language_id):
     
-    stmt = db.select(Language).filter_by(id = id)
+    # Query to obtain a JSON of the specific language
+    # with the ID taken from the route
+    stmt = db.select(Language).filter_by(id = language_id)
     language = db.session.scalar(stmt)
     
     if language:
@@ -51,15 +54,17 @@ def get_language(id):
 
 
 # Update a single language
-@languages_bp.route("/<int:id>", methods=["PUT", "PATCH"])
+@languages_bp.route("/<int:language_id>", methods=["PUT", "PATCH"])
 @jwt_required()
-def update_language(id):
+def update_language(language_id):
     
     authorize()
     
     language_info = LanguageSchema(exclude=["id"]).load(request.json)
     
-    stmt = db.select(Language).filter_by(id = id)
+    # Query to obtain a JSON of the specific language
+    # with the ID taken from the route
+    stmt = db.select(Language).filter_by(id = language_id)
     language = db.session.scalar(stmt)
     
     if language:
@@ -76,13 +81,15 @@ def update_language(id):
 
 
 # Delete a single language
-@languages_bp.route("/<int:id>", methods=["DELETE"])
+@languages_bp.route("/<int:language_id>", methods=["DELETE"])
 @jwt_required()
-def delete_language(id):
+def delete_language(language_id):
     
     authorize()
     
-    stmt = db.select(Language).filter_by(id = id)
+    # Query to obtain a JSON of the specific language
+    # with the ID taken from the route
+    stmt = db.select(Language).filter_by(id = language_id)
     language = db.session.scalar(stmt)
     
     if language:

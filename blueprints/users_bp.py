@@ -121,7 +121,7 @@ def delete_user(user_id):
         try:
             db.session.delete(user)
             db.session.commit()
-        except exc.IntegrityError:
+        except (exc.IntegrityError, AssertionError):
             return {"error": "This user is linked to other resources. Dependencies must be removed first."}, 409
         
         return {"status": f"{user.name} has been deleted"}, 200

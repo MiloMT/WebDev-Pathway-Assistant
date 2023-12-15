@@ -3,6 +3,10 @@
 [Github Repository](https://github.com/MiloMT/WebDev-Pathway-Assistant)  
 [Github Project](https://github.com/users/MiloMT/projects/3)
 
+**Installation Note**
+
+Included with the repository is a '.flaskenv.sample' file. In order for the API to run correctly, a '.flaskenv' file has to be created and the correct values assigned to each parameter as noted in the sample file. A database also needs to be created along with a database user with sufficient permissions to create and destroy records and tables.
+
 ## The problem at hand
 
 When beginning a learning journey in web development, students can often find themselves asking a few key questions:

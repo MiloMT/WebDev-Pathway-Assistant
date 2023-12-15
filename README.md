@@ -3,15 +3,22 @@
 [Github Repository](https://github.com/MiloMT/WebDev-Pathway-Assistant)  
 [Github Project](https://github.com/users/MiloMT/projects/3)
 
-## Problem Definition
+## The problem at hand
 
-When beginning a learning journey in web development, there are innumerable resources, tools and pathways a person can use and undergo. This can lodge individuals in a state of indecision when trying to navigate the best way to learn. Not only this, but the information surrounding tooling in web development is spread across a variety of sources, making it difficult to track down information about the variety of tools available and enlarging the task of effective learning.
+When beginning a learning journey in web development, students can often find themselves asking a few key questions:
 
-## Problem Reasoning
+- Where do I start?
+- What should I learn?
+- What are the tools that are available for different aspects of development?
+- How do I find resources about these tools?
 
-This problem creates a lack of clarity surrounding the learning process in web development. This can cause anxiety, lost time and effort and a lack of direction for those wishing to develop their skills further in this field.
+There are innumerable resources, tools and pathways a person can use and undergo. This can not only lodge individuals in a state of indecision when trying to navigate the best way to learn, but it can also be difficult to be aware of the variety of tools and packages that are available to develop the different components relevant to the web development field. The information surrounding tooling in web development is spread across a variety of sources, making it difficult to track down information about the variety of tools available and enlarging the task of effective learning.
 
-This API intends to remedy the above by creating a single source of truth that users can utilise to plan their learning approach to web development. It contains information on a variety of web development tools and the tech stacks that utilise these tools. It can also generate a learning plan based on the users needs, and provide suggestions on time frames for users to dedicate to the task.
+## What does this mean?
+
+This problem creates a lack of clarity surrounding the learning process in web development. This can cause anxiety, lost time and effort and a lack of direction for those wishing to develop their skills further in this field. Often this leaves students discouraged and draws out effective learning time immensely without a lack of focus on where to dedicate time and attention.
+
+This API intends to remedy the above by creating a single source of truth that users can utilise to plan their learning approach to web development. It contains information on a variety of web development tools and the tech stacks that utilise these tools. Each tool can contain logical steps that a user can take to learn in an efficient manner. This tool could also be used as a way to show other developers or prospective employers the depth of knowledge and experience that a developer possesses, or can provide an avenue for discussion on what a developer or student should be striving to dedicate their time towards going forward.
 
 ## Database Selection
 

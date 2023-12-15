@@ -34,7 +34,7 @@ def create_user_tool(user_id):
     
     authorize(user_id)
     
-    tool_id = (User_ToolSchema(exclude=["user"]).load(request.json))["tool"]["id"]
+    tool_id = (User_ToolSchema(exclude=["user"]).load(request.json, partial=True))["tool"]["id"]
     
     stmt = db.select(User).filter_by(id = user_id)
     user = db.session.scalar(stmt)

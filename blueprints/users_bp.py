@@ -50,7 +50,7 @@ def create_user():
 # Login a user and return a JWT key
 @users_bp.route("/login", methods=["POST"])
 def login():
-    user_info = UserSchema(exclude=["id"]).load(request.json)
+    user_info = UserSchema(exclude=["id"]).load(request.json, partial=True)
     
     stmt = db.select(User).where(User.email == user_info["email"])
     user = db.session.scalar(stmt)
@@ -94,10 +94,7 @@ def update_user(user_id):
         user.password = bcrypt.generate_password_hash(user_info.get("password", user.password)).decode("utf8")
         if "is_admin" in user_info:
             authorize()
-            if user_info["is_admin"].lower() == "true":
-                user.is_admin = True
-            else:
-                user.is_admin = False
+            user.is_admin = user_info["is_admin"]
         try:
             db.session.commit()
         except exc.IntegrityError:

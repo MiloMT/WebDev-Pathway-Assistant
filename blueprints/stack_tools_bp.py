@@ -35,7 +35,7 @@ def create_stack_tool(stack_id):
     stack = db.session.scalar(stmt)
     
     if stack:
-        tool_id = (Stack_ToolSchema(exclude=["stack"]).load(request.json))["tool"]["id"]
+        tool_id = (Stack_ToolSchema(exclude=["stack"]).load(request.json, partial=True))["tool"]["id"]
 
         stmt = db.select(Tool).filter_by(id = tool_id)
         tool = db.session.scalar(stmt)

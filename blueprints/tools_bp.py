@@ -27,20 +27,25 @@ def create_tool():
     
     authorize()
     
-    tool_info = ToolSchema(exclude=["id"]).load(request.json)
+    tool_info = ToolSchema(exclude=["id"]).load(request.json, partial=True)
+    
     tool = Tool(
         name = tool_info["name"],
         description = tool_info.get("description", ""),
-        category_id = tool_info.get("category").get("id"),
-        language_id = tool_info.get("language").get("id")
+        category_id = tool_info.get("category", {}).get("id"),
+        language_id = tool_info.get("language", {}).get("id")
     )
-    
+        
     try:
         db.session.add(tool)
         db.session.commit()
     except exc.IntegrityError as e:
-        if "category_id" in str(e.orig):
+        if all(x in str(e.orig) for x in ["category_id", "Failing row"]):
+            return {"error": "Ensure that the category ID is included in the request"}, 409
+        elif "category_id" in str(e.orig):
             return {"error": "Category specified can't be found"}, 409
+        elif all(x in str(e.orig) for x in ["language_id", "Failing row"]):
+            return {"error": "Ensure that the language ID is included in the request"}, 409
         elif "language_id" in str(e.orig):
             return {"error": "Language specified can't be found"}, 409
         else:
@@ -69,7 +74,7 @@ def update_tool(id):
     
     authorize()
     
-    tool_info = ToolSchema(exclude=["id"]).load(request.json)
+    tool_info = ToolSchema(exclude=["id"]).load(request.json, partial=True)
     
     stmt = db.select(Tool).filter_by(id = id)
     tool = db.session.scalar(stmt)
@@ -112,7 +117,7 @@ def delete_tool(id):
         try:
             db.session.delete(tool)
             db.session.commit()
-        except exc.IntegrityError:
+        except (exc.IntegrityError, AssertionError):
             return {"error": "This tool is linked to other resources. Dependencies must be removed first."}, 409
         
         return {"status": f"{tool.name} has been deleted"}, 200

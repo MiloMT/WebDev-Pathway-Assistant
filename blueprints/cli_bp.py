@@ -133,7 +133,7 @@ def db_seed():
         User(
             name = "Admin User",
             email = "admin@test.com",
-            password = bcrypt.generate_password_hash("admin").decode("utf8"),
+            password = bcrypt.generate_password_hash("adminadmin").decode("utf8"),
             is_admin = True
         ), 
         User(

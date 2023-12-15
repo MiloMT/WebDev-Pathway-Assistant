@@ -14,7 +14,7 @@ stacks_bp.register_blueprint(stack_tools_bp)
 # Get all stacks
 @stacks_bp.route("/")
 def all_stacks():
-    
+
     stmt = db.select(Stack).order_by("name")
     stacks = db.session.scalars(stmt).all()
     return StackSchema(many=True, exclude=["stack_tools"]).dump(stacks)
@@ -96,7 +96,7 @@ def delete_stack(id):
         try:
             db.session.delete(stack)
             db.session.commit()
-        except exc.IntegrityError:
+        except (exc.IntegrityError, AssertionError):
             return {"error": "This stack is linked to other resources. Dependencies must be removed first."}, 409
             
         return {"status": f"{stack.name} has been deleted"}, 200
